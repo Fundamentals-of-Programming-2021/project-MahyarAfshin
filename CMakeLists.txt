@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.16)
+project("FOP final project")
+include_directories("/opt/homebrew/include/")
+link_directories("/opt/homebrew/lib/")
+add_executable(main main.c)
+target_link_libraries(main m SDL2 SDL2_gfx)
