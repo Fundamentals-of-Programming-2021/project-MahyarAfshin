@@ -227,3 +227,5 @@ int getMousePosition(center* hexagonCenters, SDL_Renderer* rend, bool chosen_ter
     return -1; 
 }
 
+
+

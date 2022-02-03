@@ -7,7 +7,7 @@ int mouse_xPosition;
 int mouse_yPosition;
  
 int main(){
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     SDL_Window* gameWindow=SDL_CreateWindow("state.io",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,windowWidth,windowHeight,0);
     SDL_Renderer* rend=SDL_CreateRenderer(gameWindow,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     SDL_SetRenderDrawColor(rend,0xff,0xff,0xff,0xff);
@@ -35,6 +35,7 @@ int main(){
                     addAnAttack_atTail();
                     attack* nextAttack=accessToTheEndOfAttacksLinkedList();
                     nextAttack->attackerIndex=clickedIndex;
+                    nextAttack->numOfSoldiers=hexagonsCenters[nextAttack->attackerIndex].numOfSoldiers;
                     nextAttack->defenderIndex=-1;
                     chosen_territory_for_attack=true;
                 }
@@ -46,8 +47,10 @@ int main(){
             }
         }
         getMousePosition(hexagonsCenters,rend,chosen_territory_for_attack,mouse_xPosition,mouse_yPosition);
-        makingSoldiersLinkedList(hexagonsCenters);
         attacksInProgress(hexagonsCenters);
+        soldiers_collision(hexagonsCenters);
+        soldiersCollision_withBase(hexagonsCenters);
+        finishAttack();
         displaySoldiers(rend,hexagonsCenters);
         SDL_RenderPresent(rend);
         SDL_Delay(1000/FPS);
