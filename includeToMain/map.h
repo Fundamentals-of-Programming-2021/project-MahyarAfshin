@@ -214,7 +214,7 @@ int getMousePosition(center* hexagonCenters, SDL_Renderer* rend, bool chosen_ter
         stringColor(rend,75,725,"Choose your own territory you want to use for attacking!",0xff000000);
     }
     else{
-        stringColor(rend,135,725,"Choose your oponent territory to attack!",0xff000000);
+        stringColor(rend,135,725,"Choose your opponent territory to attack!",0xff000000);
     }
     for(int i=0; i<46; i++){
         double distance=sqrt((mouse_yPosition-hexagonCenters[i].y_coordinate)*(mouse_yPosition-hexagonCenters[i].y_coordinate)+(mouse_xPosition-hexagonCenters[i].x_coordinate)*(mouse_xPosition-hexagonCenters[i].x_coordinate));
@@ -226,6 +226,3 @@ int getMousePosition(center* hexagonCenters, SDL_Renderer* rend, bool chosen_ter
     }
     return -1; 
 }
-
-
-

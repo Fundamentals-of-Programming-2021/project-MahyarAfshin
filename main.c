@@ -19,6 +19,7 @@ int main(){
     int close=0;
     SDL_Event event;
     bool chosen_territory_for_attack=false;
+    long long int totalNumOfAttacks=0;
     while(close != 1){
         SDL_SetRenderDrawColor(rend,0xff,0xff,0xff,0xff);
         SDL_RenderClear(rend);
@@ -32,26 +33,25 @@ int main(){
             else if(event.type==SDL_MOUSEBUTTONDOWN){
                 int clickedIndex=getMousePosition(hexagonsCenters,rend,chosen_territory_for_attack,mouse_xPosition,mouse_yPosition);
                 if(chosen_territory_for_attack==false && clickedIndex != -1){
-                    addAnAttack_atTail();
-                    attack* nextAttack=accessToTheEndOfAttacksLinkedList();
-                    nextAttack->attackerIndex=clickedIndex;
-                    nextAttack->numOfSoldiers=hexagonsCenters[nextAttack->attackerIndex].numOfSoldiers;
-                    nextAttack->defenderIndex=-1;
+                    totalNumOfAttacks++;
+                    addAnAttack(totalNumOfAttacks,clickedIndex,hexagonsCenters);
                     chosen_territory_for_attack=true;
                 }
                 else if(clickedIndex != -1){
-                    attack* nextAttack=accessToTheEndOfAttacksLinkedList();
-                    nextAttack->defenderIndex=clickedIndex;
+                    if(clickedIndex != attacks[totalNumOfAttacks-1].attackerIndex){
+                        attacks[totalNumOfAttacks-1].defenderIndex=clickedIndex;
+                        hexagonsCenters[attacks[totalNumOfAttacks-1].attackerIndex].numOfSoldiers=0;
+                    }
                     chosen_territory_for_attack=false;
+                    
                 }
             }
         }
         getMousePosition(hexagonsCenters,rend,chosen_territory_for_attack,mouse_xPosition,mouse_yPosition);
-        attacksInProgress(hexagonsCenters);
-        soldiers_collision(hexagonsCenters);
-        soldiersCollision_withBase(hexagonsCenters);
-        finishAttack();
-        displaySoldiers(rend,hexagonsCenters);
+        attacksInProgress(hexagonsCenters,totalNumOfAttacks);
+        soldiersCollision(totalNumOfAttacks);
+        soldiersCollisionWithBase(totalNumOfAttacks,hexagonsCenters);
+        displaySoldiers(rend,hexagonsCenters,totalNumOfAttacks);
         SDL_RenderPresent(rend);
         SDL_Delay(1000/FPS);
         soldiersAddingByTime(hexagonsCenters,numOfFrames_fromBegining);
