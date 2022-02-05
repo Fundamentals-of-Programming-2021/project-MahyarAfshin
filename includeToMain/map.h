@@ -26,6 +26,8 @@ typedef struct arrow{
     Sint16 y_coordinates[7];
 }arrow;
 
+color* colors=NULL;
+
 hexagon* creatingHexagons(center hexagonCenter, Sint16 radius);
 center* createMapTemplate(SDL_Renderer* rend); // the return will be an array containing 46 centers for hexagons
 //the return of below function will be a string that shows the user, it's color in game
@@ -118,7 +120,7 @@ char* generatingRandomMap(int numOfOponents, int numOfReigons, center* hexagonsC
     max_region--;
 
     //initializing an array of colors
-    color* colors=malloc(6*sizeof(color));
+    colors=malloc(6*sizeof(color));
     colors[0].color=0x7000ff00; //green
     colors[1].color=0x70ff0000; //blue
     colors[2].color=0x700000ff; //red
@@ -190,7 +192,6 @@ char* generatingRandomMap(int numOfOponents, int numOfReigons, center* hexagonsC
         hexagonsCenters[reigonIndex].color=0x70c0c0c0;
         hexagonsCenters[reigonIndex].is_used=true;
     }
-    free(colors);
     return displayString;
 }
 

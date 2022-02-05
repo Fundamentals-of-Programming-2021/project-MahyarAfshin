@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include "map.h"
+#include "AI.h"
 
 const int windowWidth=600;
 const int windowHeight=750;
@@ -14,7 +14,9 @@ int main(){
     SDL_RenderClear(rend);
     center* hexagonsCenters=createMapTemplate(rend);
     char* displayString=generatingRandomMap(5,20,hexagonsCenters);
+    Uint32 playerColor=checkClickedIndexColor(displayString);
     soldiers_beginigOfTheGame(hexagonsCenters);
+    int totalNumOfOponents=setAttackTime_forOponents(playerColor,hexagonsCenters);
     long long int numOfFrames_fromBegining=0;
     int close=0;
     SDL_Event event;
@@ -32,12 +34,12 @@ int main(){
             }
             else if(event.type==SDL_MOUSEBUTTONDOWN){
                 int clickedIndex=getMousePosition(hexagonsCenters,rend,chosen_territory_for_attack,mouse_xPosition,mouse_yPosition);
-                if(chosen_territory_for_attack==false && clickedIndex != -1 && hexagonsCenters[clickedIndex].color==checkClickedIndexColor(displayString)){
+                if(chosen_territory_for_attack==false && clickedIndex != -1 && hexagonsCenters[clickedIndex].color==playerColor){
                     totalNumOfAttacks++;
                     addAnAttack(totalNumOfAttacks,clickedIndex,hexagonsCenters);
                     chosen_territory_for_attack=true;
                 }
-                else if(clickedIndex != -1 && chosen_territory_for_attack==true){
+                else if(clickedIndex != -1 && chosen_territory_for_attack==true ){
                     if(clickedIndex != attacks[totalNumOfAttacks-1].attackerIndex){
                         attacks[totalNumOfAttacks-1].defenderIndex=clickedIndex;
                         hexagonsCenters[attacks[totalNumOfAttacks-1].attackerIndex].numOfSoldiers=0;
@@ -47,8 +49,7 @@ int main(){
             }
         }
         getMousePosition(hexagonsCenters,rend,chosen_territory_for_attack,mouse_xPosition,mouse_yPosition);
-        // makeTeams(hexagonsCenters);
-        // AI_attack(hexagonsCenters,displayString,totalNumOfAttacks,numOfFrames_fromBegining);
+        AI_attack(hexagonsCenters,&totalNumOfAttacks,totalNumOfOponents,numOfFrames_fromBegining);
         attacksInProgress(hexagonsCenters,totalNumOfAttacks);
         soldiersCollision(totalNumOfAttacks);
         soldiersCollisionWithBase(totalNumOfAttacks,hexagonsCenters);
