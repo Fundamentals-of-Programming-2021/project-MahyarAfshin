@@ -25,6 +25,7 @@ typedef struct center{
 }center;
 
 typedef struct attack{
+    Uint32 color;
     int attackerIndex;
     int defenderIndex;
     int numOfSoldiers;
@@ -63,6 +64,7 @@ void addAnAttack(long long int totalNumOfAttacks, int clickedIndex,center* hexag
     attacks[totalNumOfAttacks-1].attackerIndex=clickedIndex;
     attacks[totalNumOfAttacks-1].defenderIndex=-1;
     attacks[totalNumOfAttacks-1].numOfSoldiers=hexagonsCenters[clickedIndex].numOfSoldiers;
+    attacks[totalNumOfAttacks-1].color=hexagonsCenters[clickedIndex].color;
     attacks[totalNumOfAttacks-1].firstSoldier=malloc(attacks[totalNumOfAttacks-1].numOfSoldiers*sizeof(soldier));
     for(int i=0; i<attacks[totalNumOfAttacks-1].numOfSoldiers; i++){
         attacks[totalNumOfAttacks-1].firstSoldier[i].color=hexagonsCenters[clickedIndex].color;
@@ -159,7 +161,7 @@ void soldiersCollisionWithBase(long long int totalNumOfAttacks, center* hexagons
                             hexagonsCenters[k].numOfSoldiers--;
                             if(hexagonsCenters[k].numOfSoldiers==-1){
                                 hexagonsCenters[k].numOfSoldiers=1;
-                                hexagonsCenters[k].color=attacks[i].firstSoldier[0].color;
+                                hexagonsCenters[k].color=attacks[i].color;
                             }
                         }
                     }
@@ -176,5 +178,26 @@ void soldiersCollisionWithBase(long long int totalNumOfAttacks, center* hexagons
                 }
             }
         }
+    }
+}
+
+long long int findFinishedAttack(long long int totalNumOfAttacks){
+    for(int i=0; i<totalNumOfAttacks; i++){
+        if(attacks[i].numOfSoldiers==0){
+            return i;
+        }
+    }
+    return -1;
+}
+
+void deleteFinishedAttacks(long long int* totalNumOfAttacks){
+    int deletedIndex=findFinishedAttack(*totalNumOfAttacks);
+    while(deletedIndex != -1){
+        for(int count=deletedIndex; count<(*totalNumOfAttacks)-1; count++){
+            attacks[count]=attacks[count+1];
+        }
+        (*totalNumOfAttacks)--;
+        attacks=realloc(attacks,(*totalNumOfAttacks)*sizeof(attack));
+        deletedIndex=findFinishedAttack(*totalNumOfAttacks);
     }
 }

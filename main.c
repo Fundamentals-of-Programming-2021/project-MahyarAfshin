@@ -32,25 +32,27 @@ int main(){
             }
             else if(event.type==SDL_MOUSEBUTTONDOWN){
                 int clickedIndex=getMousePosition(hexagonsCenters,rend,chosen_territory_for_attack,mouse_xPosition,mouse_yPosition);
-                if(chosen_territory_for_attack==false && clickedIndex != -1){
+                if(chosen_territory_for_attack==false && clickedIndex != -1 && hexagonsCenters[clickedIndex].color==checkClickedIndexColor(displayString)){
                     totalNumOfAttacks++;
                     addAnAttack(totalNumOfAttacks,clickedIndex,hexagonsCenters);
                     chosen_territory_for_attack=true;
                 }
-                else if(clickedIndex != -1){
+                else if(clickedIndex != -1 && chosen_territory_for_attack==true){
                     if(clickedIndex != attacks[totalNumOfAttacks-1].attackerIndex){
                         attacks[totalNumOfAttacks-1].defenderIndex=clickedIndex;
                         hexagonsCenters[attacks[totalNumOfAttacks-1].attackerIndex].numOfSoldiers=0;
                     }
-                    chosen_territory_for_attack=false;
-                    
+                    chosen_territory_for_attack=false;  
                 }
             }
         }
         getMousePosition(hexagonsCenters,rend,chosen_territory_for_attack,mouse_xPosition,mouse_yPosition);
+        // makeTeams(hexagonsCenters);
+        // AI_attack(hexagonsCenters,displayString,totalNumOfAttacks,numOfFrames_fromBegining);
         attacksInProgress(hexagonsCenters,totalNumOfAttacks);
         soldiersCollision(totalNumOfAttacks);
         soldiersCollisionWithBase(totalNumOfAttacks,hexagonsCenters);
+        deleteFinishedAttacks(&totalNumOfAttacks);
         displaySoldiers(rend,hexagonsCenters,totalNumOfAttacks);
         SDL_RenderPresent(rend);
         SDL_Delay(1000/FPS);

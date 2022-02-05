@@ -190,7 +190,6 @@ char* generatingRandomMap(int numOfOponents, int numOfReigons, center* hexagonsC
         hexagonsCenters[reigonIndex].color=0x70c0c0c0;
         hexagonsCenters[reigonIndex].is_used=true;
     }
-
     free(colors);
     return displayString;
 }
@@ -225,4 +224,28 @@ int getMousePosition(center* hexagonCenters, SDL_Renderer* rend, bool chosen_ter
         }
     }
     return -1; 
+}
+
+Uint32 checkClickedIndexColor(char* displayString){
+    switch(displayString[14]){
+        case 'G':
+            return 0x7000ff00;
+        case 'B':
+            if(displayString[15]=='L'){
+                return 0x70ff0000;
+            }
+            else{
+                return 0x70004b96;
+            }
+        case 'R':
+            return 0x700000ff;
+        case 'P':
+            if(displayString[15]=='I'){
+                return 0x70cbc0ff;
+            }
+            else{
+                return 0x708b008b;
+            }
+    }
+    return 0x00000000;
 }
