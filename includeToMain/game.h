@@ -1,17 +1,31 @@
 #include<stdio.h>
-#include "game.h"
+#include"potion.h"
 
 int mouse_xPosition;
 int mouse_yPosition;
- 
-int main(){
-    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-    SDL_Window* gameWindow=SDL_CreateWindow("state.io",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,windowWidth,windowHeight,0);
-    SDL_Renderer* rend=SDL_CreateRenderer(gameWindow,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
+int startGame(int mapNum, SDL_Renderer* rend){
     SDL_SetRenderDrawColor(rend,0xff,0xff,0xff,0xff);
     SDL_RenderClear(rend);
     center* hexagonsCenters=createMapTemplate(rend);
-    char* displayString=generatingRandomMap(5,20,hexagonsCenters);
+    char* displayString;
+    switch(mapNum){
+        case 1:
+            displayString=map1_menu(hexagonsCenters);
+            break;
+        case 2:
+            displayString=map2_menu(hexagonsCenters);
+            break;
+        case 3:
+            displayString=map3_menu(hexagonsCenters);
+            break;
+        case 4:
+            displayString=map4_menu(hexagonsCenters);
+            break;
+        case 5:
+            displayString=generatingRandomMap(5,20,hexagonsCenters);
+            break;
+    }
     Uint32 playerColor=checkClickedIndexColor(displayString);
     soldiers_beginigOfTheGame(hexagonsCenters);
     int totalNumOfOponents=0;
@@ -66,8 +80,5 @@ int main(){
         }
         totalNumOfOponents=setAttackTime_forOponents(playerColor,hexagonsCenters,totalNumOfOponents);
     }
-    SDL_DestroyRenderer(rend);
-    SDL_DestroyWindow(gameWindow);
-    SDL_Quit();
-    return 0;
+    return close;
 }

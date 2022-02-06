@@ -1,3 +1,5 @@
+#include<SDL2/SDL_ttf.h>
+#include<SDL2/SDL_image.h>
 #include "map.h"
 
 typedef struct attack_check{
@@ -15,6 +17,11 @@ typedef struct teams{
 
 teams* oponents=NULL;
 
+const int windowWidth=600;
+const int windowHeight=750;
+const int boxesWidth=200;
+const int boxesHeight=40;
+
 int find_totalNumOfOponents(Uint32 playerColor){
     int totalNumOfOponents=0;
     for(int i=0; i<6; i++){
@@ -25,9 +32,15 @@ int find_totalNumOfOponents(Uint32 playerColor){
     return totalNumOfOponents;
 } 
 
-int makeOponentsArray(Uint32 playerColor){
+int makeOponentsArray(Uint32 playerColor, int num){
     int totalNumOfOponents=find_totalNumOfOponents(playerColor);
-    oponents=malloc(totalNumOfOponents*sizeof(teams));
+    if(num==0){
+        oponents=malloc(totalNumOfOponents*sizeof(teams));
+    }
+    else{
+        free(oponents);
+        oponents=malloc(totalNumOfOponents*sizeof(teams));
+    }
     int count=0;
     for(int i=0; i<6; i++){
         if(colors[i].is_used==true && colors[i].color != playerColor){
@@ -36,12 +49,15 @@ int makeOponentsArray(Uint32 playerColor){
             count++;
         }
     }
+    oponents=realloc(oponents,(totalNumOfOponents+1)*sizeof(teams));
+    oponents[totalNumOfOponents].numOfTerritories=0;
+    oponents[totalNumOfOponents].color=playerColor;
     return totalNumOfOponents;
 }
 
-int makeTeams(Uint32 playerColor, center* hexagonsCenters){
-    int totalNumOfOponents=makeOponentsArray(playerColor);
-    for(int i=0; i<totalNumOfOponents; i++){
+int makeTeams(Uint32 playerColor, center* hexagonsCenters, int num){
+    int totalNumOfOponents=makeOponentsArray(playerColor,num);
+    for(int i=0; i<totalNumOfOponents+1; i++){
         for(int j=0; j<46; j++){
             if(hexagonsCenters[j].is_used==true && hexagonsCenters[j].color==oponents[i].color){
                 oponents[i].numOfTerritories++;
@@ -52,11 +68,10 @@ int makeTeams(Uint32 playerColor, center* hexagonsCenters){
     return totalNumOfOponents;
 }
 
-int setAttackTime_forOponents(Uint32 playerColor, center* hexagonsCenters){
-    int totalNumOfOponents=makeTeams(playerColor,hexagonsCenters);
+int setAttackTime_forOponents(Uint32 playerColor, center* hexagonsCenters, int num){
+    int totalNumOfOponents=makeTeams(playerColor,hexagonsCenters,num);
     for(int i=0; i<totalNumOfOponents; i++){
         oponents[i].attackTime=rand()%4+2;
-        printf("%d\n",oponents[i].attackTime);
     }
     return totalNumOfOponents;
 }
@@ -73,14 +88,12 @@ int score_attacks(center* hexagonsCenters, int attackerIndex, int defenderIndex,
         }
     }
     score-=100*hexagonsCenters[defenderIndex].numOfSoldiers;
-    // for(int i=0; i<totalNumOfOponents; i++){
-    //     for(int j=0; j<oponents[i].numOfTerritories; j++){
-    //         if(oponents[i].territories_index[j]==attackerIndex){
-    //             score-=10*oponents[i].numOfTerritories;
-    //         }
-    //     }
-    // }
-    score-=200*(hexagonsCenters[attackerIndex].numOfSoldiers-hexagonsCenters[defenderIndex].numOfSoldiers);
+    if(hexagonsCenters[attackerIndex].numOfSoldiers-hexagonsCenters[defenderIndex].numOfSoldiers >=0){
+        score+=100*(hexagonsCenters[attackerIndex].numOfSoldiers-hexagonsCenters[defenderIndex].numOfSoldiers);
+    }
+    else{
+        score=-1000000;
+    }
     return score;
 }
 
@@ -104,148 +117,110 @@ void findTheBestAttack(int oponentIndex, center* hexagonsCenters, long long int 
 void AI_attack(center* hexagonsCenters, long long int* totalNumOfAttacks, int totalNumOfOponents, long long int numOfFrames_fromBeginig){
     for(int i=0; i<totalNumOfOponents; i++){
         if(numOfFrames_fromBeginig%(oponents[i].attackTime*240)==10){
-            if(i==1){
-                printf("we attacked on %lld\n", numOfFrames_fromBeginig);
-            }
             findTheBestAttack(i,hexagonsCenters,*totalNumOfAttacks,totalNumOfOponents);
             (*totalNumOfAttacks)++;
-            addAnAttack(*totalNumOfAttacks,oponents[i].bestAttack.attackerIndex,hexagonsCenters);
-            attacks[*totalNumOfAttacks-1].defenderIndex=oponents[i].bestAttack.defenderIndex;
+            addAnAttack(*totalNumOfAttacks,oponents[i].bestAttack.defenderIndex,hexagonsCenters,oponents[i].bestAttack.attackerIndex);
             hexagonsCenters[attacks[*totalNumOfAttacks-1].attackerIndex].numOfSoldiers=0;
         }
     }
 }
 
+// this function returns 0 if the game isn't finish , -1 if the player lost and 1 if it wins
+int check_forWinner(center* hexagonsCenters, Uint32 playerColor){
+    int map_array[46];
+    for(int i=0; i<46; i++){
+        map_array[i]=-1;
+    }
+    for(int i=0; i<46; i++){
+        if(hexagonsCenters[i].is_used==true){
+            if(hexagonsCenters[i].color==playerColor){
+                map_array[i]=1;
+            }
+            else{
+                map_array[i]=0;
+            }
+        }
+    }
+    int index=1;
+    for(int i=0; i<46; i++){
+        if(map_array[i]==-1 || map_array[i]==0){
+            continue;
+        }
+        else{
+            index=-1;
+            break;
+        }
+    }
+    if(index==1){
+        return -1;
+    }
+    index=1;
+    for(int i=0; i<46; i++){
+        if(map_array[i]==-1 || map_array[i]==1){
+            continue;
+        }
+        else{
+            index=-1;
+            break;
+        }
+    }
+    if(index==1){
+        return 1;
+    }
+    return 0;
+}
 
-// #include"map.h"
 
-// typedef struct bestAttack{
-//     int attackerIndex;
-//     int defenderIndex;
-//     int score;
-// }bestAttack;
+int winnerPage(int state, SDL_Renderer* rend){
+    TTF_Init();
+    SDL_Surface* surface=IMG_Load("../resources/menuFirstPage.png");
+    SDL_Texture* tex=SDL_CreateTextureFromSurface(rend,surface);
+    SDL_FreeSurface(surface);
+    SDL_Rect dest;
+    SDL_QueryTexture(tex,NULL,NULL,&dest.w,&dest.h);
+    dest.w=windowWidth;
+    dest.h=windowHeight;
+    dest.x=0;
+    dest.y=0;
 
-// typedef struct teams{
-//     Uint32 color;
-//     int territoryCentersIndex[46];
-//     int numOfTerritories;
-//     bestAttack attack;
-// }teams;
+    char string[50];
+    string[0]='\0';
+    if(state==1){
+        strcat(string,"You Won!");
+    }
+    else{
+        strcat(string,"You Lost!");
+    }
 
-// int totalNumOfTeams=0;
+    TTF_Font* font=TTF_OpenFont("../resources/Exported Fonts/Annai MN/AnnaiMN.ttf", 15);
+    SDL_Color color={0,0,0,255};
+    SDL_Surface* gameName=TTF_RenderText_Solid(font,string,color);
+    SDL_Texture* nameTex=SDL_CreateTextureFromSurface(rend,gameName);
+    SDL_FreeSurface(gameName);
+    SDL_Rect nameDest;
+    SDL_QueryTexture(nameTex,NULL,NULL,&nameDest.w,&nameDest.h);
+    nameDest.x=(windowWidth-nameDest.w)/2;
+    nameDest.y=(windowHeight-boxesHeight)/2+(boxesHeight-nameDest.h)/2;
 
-// teams players[10];
-
-// void makeTeams(center* hexagonsCenters){
-//     int counter=0;
-//     for(int i=0; i<6; i++){
-//         if(colors[i].is_used==true){
-//             players[counter].color=colors[i].color;
-//             players[counter].numOfTerritories=0;
-//             counter++;
-//         }
-//     }
-//     for(int i=0; i<counter; i++){
-//         for(int j=0; j<46; j++){
-//             if(hexagonsCenters[j].color==players[i].color){
-//                 players[i].numOfTerritories++;
-//             }
-//         }
-//         int tempCounter=0;
-//         for(int j=0; j<46; j++){
-//             if(hexagonsCenters[j].color==players[i].color){
-//                 players[i].territoryCentersIndex[tempCounter]=j;
-//                 tempCounter++;
-//             }
-//         }
-//     }
-//     totalNumOfTeams=counter;
-// }
-
-// int scoring_attacks(center* hexagonsCenters, int attackerIndex, int defenderIndex, long long int totalNumOfAttacks){
-//     //calculating the maximum distance possible
-//     double max_deltaX=hexagonsCenters[6].x_coordinate-hexagonsCenters[39].x_coordinate;
-//     double max_deltaY=hexagonsCenters[6].y_coordinate-hexagonsCenters[39].y_coordinate;
-//     double max_distance=sqrt(max_deltaX*max_deltaX+max_deltaY*max_deltaY);
-
-//     //calculate the maximum diference in soldiers between two territories
-//     int max_diference=0;
-//     for(int i=0; i<46; i++){
-//         for(int j=i+1; j<46; j++){
-//             if(hexagonsCenters[i].is_used==true && hexagonsCenters[j].is_used==true && hexagonsCenters[i].color != hexagonsCenters[j].color && hexagonsCenters[i].color != 0x70c0c0c0){
-//                 int temp=hexagonsCenters[i].numOfSoldiers-hexagonsCenters[j].numOfSoldiers;
-//                 if(temp>max_diference){
-//                     max_diference=temp;
-//                 }
-//             }
-//         }
-//     }
-
-//     //calculate the maximum teams territory
-//     int max_numOfTerritories=0;
-//     for(int i=0; i<totalNumOfTeams; i++){
-//         if(players[i].numOfTerritories>max_numOfTerritories){
-//             max_numOfTerritories=players[i].numOfTerritories;
-//         }
-//     }
-
-//     int score=0;
-
-//     double deltaX=hexagonsCenters[attackerIndex].x_coordinate-hexagonsCenters[defenderIndex].x_coordinate;
-//     double deltaY=hexagonsCenters[attackerIndex].y_coordinate-hexagonsCenters[defenderIndex].y_coordinate;
-//     double distance=sqrt(deltaX*deltaX+deltaY*deltaY);
-//     score+=max_distance/distance;
-//     int soldiersNum_diference=hexagonsCenters[attackerIndex].numOfSoldiers-hexagonsCenters[defenderIndex].numOfSoldiers;
-//     if(soldiersNum_diference>0){
-//         score+=max_diference/soldiersNum_diference;
-//     }
-
-//     for(int i=0; i<totalNumOfAttacks; i++){
-//         if(attacks[i].numOfSoldiers != 0 && attacks[i].attackerIndex==defenderIndex){
-//             score+=100;
-//         }
-//     }
-
-//     for(int i=0; i<totalNumOfTeams; i++){
-//         for(int j=0; j<players[i].numOfTerritories; j++){
-//             if(players[i].territoryCentersIndex[j]==defenderIndex){
-//                 score+=max_numOfTerritories/players[i].numOfTerritories;
-//             }
-//         }
-//     }
-
-//     return score;
-// }
-
-// void findTheBestAttackForEachOponent(center* hexagonsCenters, char* displayString, long long int totalNumOfAttacks){
-//     Uint32 playerColor=checkClickedIndexColor(displayString);
-//     for(int i=0; i<totalNumOfTeams; i++){
-//         if(players[i].color != playerColor){
-//             players[i].attack.score=0;
-//             for(int j=0; j<players[i].numOfTerritories; j++){
-//                 for(int k=0; k<46; k++){
-//                     if(hexagonsCenters[k].is_used==true && hexagonsCenters[k].color != players[i].color){
-//                         int temp=scoring_attacks(hexagonsCenters,players[i].territoryCentersIndex[j],k,totalNumOfAttacks);
-//                         if(temp>players[i].attack.score){
-//                             players[i].attack.score=temp;
-//                             players[i].attack.attackerIndex=players[i].territoryCentersIndex[j];
-//                             players[i].attack.defenderIndex=k;
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-//     }   
-// }
-
-// void AI_attack(center* hexagonsCenters, char* displayString, long long int* totalNumOfAttacks, long long int numOfFrames_fromBegining){
-//     Uint32 playerColor=checkClickedIndexColor(displayString);
-//     findTheBestAttackForEachOponent(hexagonsCenters,displayString,*totalNumOfAttacks);
-//     if(numOfFrames_fromBegining%180==100){
-//         int index=rand()%totalNumOfTeams;
-//         (*totalNumOfAttacks)++;
-//         addAnAttack(*totalNumOfAttacks,players[index].attack.attackerIndex,hexagonsCenters);
-//         attacks[*totalNumOfAttacks-1].defenderIndex=players[index].attack.defenderIndex;
-//         hexagonsCenters[attacks[*totalNumOfAttacks-1].attackerIndex].numOfSoldiers=0;
-//     }
-// }
+    int close=0;
+    SDL_Event event;
+    while(close !=1 ){
+        SDL_SetRenderDrawColor(rend,0xff,0xff,0xff,0xff);
+        SDL_RenderClear(rend);
+        while(SDL_PollEvent(&event)){
+            if(event.type==SDL_QUIT){
+                close=1;
+            }
+        }
+        SDL_RenderCopy(rend,tex,NULL,&dest);
+        SDL_RenderCopy(rend,nameTex,NULL,&nameDest);
+        boxColor(rend,(windowWidth-boxesWidth)/2,(windowHeight-boxesHeight)/2,(windowWidth+boxesWidth)/2,(windowHeight+boxesHeight)/2,0x300000ff);
+        SDL_RenderPresent(rend);
+        SDL_Delay(1000/FPS);   
+    }
+    SDL_DestroyTexture(tex);
+    SDL_DestroyTexture(nameTex);
+    TTF_CloseFont(font);
+    TTF_Quit();
+    return close;
+}

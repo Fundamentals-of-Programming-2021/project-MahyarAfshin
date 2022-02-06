@@ -250,3 +250,260 @@ Uint32 checkClickedIndexColor(char* displayString){
     }
     return 0x00000000;
 }
+
+char* map1_menu(center* hexagonsCenters){
+    char* displayString=malloc(25*sizeof(char));
+    displayString[0]='\0';
+    strcpy(displayString,"Your color is RED!");
+    colors=malloc(6*sizeof(color));
+    colors[0].color=0x7000ff00; //green
+    colors[0].is_used=true;
+    colors[1].color=0x70ff0000; //blue
+    colors[1].is_used=true;
+    colors[2].color=0x700000ff; //red
+    colors[2].is_used=true;
+    colors[3].color=0x70cbc0ff; //pink
+    colors[3].is_used=true;
+    colors[4].color=0x70004b96; //brown
+    colors[4].is_used=true;
+    colors[5].color=0x708b008b; //purple
+    colors[5].is_used=true;
+
+    hexagonsCenters[0].is_used=true;
+    hexagonsCenters[0].color=0x70c0c0c0;
+    hexagonsCenters[1].is_used=true;
+    hexagonsCenters[1].color=0x70c0c0c0;
+    hexagonsCenters[3].is_used=true;
+    hexagonsCenters[3].color=0x7000ff00;
+    hexagonsCenters[4].is_used=true;
+    hexagonsCenters[4].color=0x70c0c0c0;
+    hexagonsCenters[5].is_used=true;
+    hexagonsCenters[5].color=0x70cbc0ff;
+    hexagonsCenters[6].is_used=true;
+    hexagonsCenters[6].color=0x70c0c0c0;
+    hexagonsCenters[10].is_used=true;
+    hexagonsCenters[10].color=0x70cbc0ff;
+    hexagonsCenters[11].is_used=true;
+    hexagonsCenters[11].color=0x708b008b;
+    hexagonsCenters[18].is_used=true;
+    hexagonsCenters[18].color=0x70c0c0c0;
+    hexagonsCenters[20].is_used=true;
+    hexagonsCenters[20].color=0x700000ff;
+    hexagonsCenters[25].is_used=true;
+    hexagonsCenters[25].color=0x700000ff;
+    hexagonsCenters[29].is_used=true;
+    hexagonsCenters[29].color=0x70ff0000;
+    hexagonsCenters[30].is_used=true;
+    hexagonsCenters[30].color=0x70004b96;
+    hexagonsCenters[31].is_used=true;
+    hexagonsCenters[31].color=0x70ff0000;
+    hexagonsCenters[32].is_used=true;
+    hexagonsCenters[32].color=0x70004b96;
+    hexagonsCenters[34].is_used=true;
+    hexagonsCenters[34].color=0x70c0c0c0;
+    hexagonsCenters[35].is_used=true;
+    hexagonsCenters[35].color=0x70c0c0c0;
+    hexagonsCenters[40].is_used=true;
+    hexagonsCenters[40].color=0x70c0c0c0;
+    hexagonsCenters[41].is_used=true;
+    hexagonsCenters[41].color=0x708b008b;
+    hexagonsCenters[45].is_used=true;
+    hexagonsCenters[45].color=0x70c0c0c0;
+
+    return displayString;
+}
+
+char* map2_menu(center* hexagonsCenters){
+    char* displayString=malloc(25*sizeof(char));
+    displayString[0]='\0';
+    strcpy(displayString,"Your color is PURPLE!");
+    colors=malloc(6*sizeof(color));
+    colors[0].color=0x7000ff00; //green
+    colors[0].is_used=true;
+    colors[1].color=0x70ff0000; //blue
+    colors[1].is_used=true;
+    colors[2].color=0x700000ff; //red
+    colors[2].is_used=true;
+    colors[3].color=0x70cbc0ff; //pink
+    colors[3].is_used=false;
+    colors[4].color=0x70004b96; //brown
+    colors[4].is_used=false;
+    colors[5].color=0x708b008b; //purple
+    colors[5].is_used=true;
+
+    hexagonsCenters[1].is_used=true;
+    hexagonsCenters[1].color=0x70c0c0c0;
+    hexagonsCenters[2].is_used=true;
+    hexagonsCenters[2].color=0x70c0c0c0;
+    hexagonsCenters[3].is_used=true;
+    hexagonsCenters[3].color=0x70c0c0c0;
+    hexagonsCenters[5].is_used=true;
+    hexagonsCenters[5].color=0x70ff0000;
+    hexagonsCenters[10].is_used=true;
+    hexagonsCenters[10].color=0x708b008b;
+    hexagonsCenters[11].is_used=true;
+    hexagonsCenters[11].color=0x70c0c0c0;
+    hexagonsCenters[12].is_used=true;
+    hexagonsCenters[12].color=0x70c0c0c0;
+    hexagonsCenters[13].is_used=true;
+    hexagonsCenters[13].color=0x700000ff;
+    hexagonsCenters[15].is_used=true;
+    hexagonsCenters[15].color=0x7000ff00;
+    hexagonsCenters[16].is_used=true;
+    hexagonsCenters[16].color=0x70c0c0c0;
+    hexagonsCenters[17].is_used=true;
+    hexagonsCenters[17].color=0x70c0c0c0;
+    hexagonsCenters[19].is_used=true;
+    hexagonsCenters[19].color=0x70c0c0c0;
+    hexagonsCenters[21].is_used=true;
+    hexagonsCenters[21].color=0x7000ff00;
+    hexagonsCenters[26].is_used=true;
+    hexagonsCenters[26].color=0x7000ff00;
+    hexagonsCenters[29].is_used=true;
+    hexagonsCenters[29].color=0x70c0c0c0;
+    hexagonsCenters[34].is_used=true;
+    hexagonsCenters[34].color=0x70c0c0c0;
+    hexagonsCenters[37].is_used=true;
+    hexagonsCenters[37].color=0x70c0c0c0;
+    hexagonsCenters[41].is_used=true;
+    hexagonsCenters[41].color=0x7000ff00;
+    hexagonsCenters[43].is_used=true;
+    hexagonsCenters[43].color=0x70c0c0c0;
+    hexagonsCenters[45].is_used=true;
+    hexagonsCenters[45].color=0x70c0c0c0;
+
+    return displayString;
+}
+
+char* map3_menu(center* hexagonsCenters){
+    char* displayString=malloc(25*sizeof(char));
+    displayString[0]='\0';
+    strcpy(displayString,"Your color is BROWN!");
+    colors=malloc(6*sizeof(color));
+    colors[0].color=0x7000ff00; //green
+    colors[0].is_used=true;
+    colors[1].color=0x70ff0000; //blue
+    colors[1].is_used=true;
+    colors[2].color=0x700000ff; //red
+    colors[2].is_used=true;
+    colors[3].color=0x70cbc0ff; //pink
+    colors[3].is_used=true;
+    colors[4].color=0x70004b96; //brown
+    colors[4].is_used=true;
+    colors[5].color=0x708b008b; //purple
+    colors[5].is_used=false;
+
+    hexagonsCenters[0].is_used=true;
+    hexagonsCenters[0].color=0x70c0c0c0;
+    hexagonsCenters[1].is_used=true;
+    hexagonsCenters[1].color=0x7000ff00;
+    hexagonsCenters[2].is_used=true;
+    hexagonsCenters[2].color=0x70c0c0c0;
+    hexagonsCenters[3].is_used=true;
+    hexagonsCenters[3].color=0x700000ff;
+    hexagonsCenters[4].is_used=true;
+    hexagonsCenters[4].color=0x70c0c0c0;
+    hexagonsCenters[5].is_used=true;
+    hexagonsCenters[5].color=0x7000ff00;
+    hexagonsCenters[9].is_used=true;
+    hexagonsCenters[9].color=0x70ff0000;
+    hexagonsCenters[10].is_used=true;
+    hexagonsCenters[10].color=0x70cbc0ff;
+    hexagonsCenters[11].is_used=true;
+    hexagonsCenters[11].color=0x70c0c0c0;
+    hexagonsCenters[12].is_used=true;
+    hexagonsCenters[12].color=0x70c0c0c0;
+    hexagonsCenters[15].is_used=true;
+    hexagonsCenters[15].color=0x7000ff00;
+    hexagonsCenters[18].is_used=true;
+    hexagonsCenters[18].color=0x70004b96;
+    hexagonsCenters[22].is_used=true;
+    hexagonsCenters[22].color=0x70c0c0c0;
+    hexagonsCenters[23].is_used=true;
+    hexagonsCenters[23].color=0x70c0c0c0;
+    hexagonsCenters[29].is_used=true;
+    hexagonsCenters[29].color=0x70c0c0c0;
+    hexagonsCenters[35].is_used=true;
+    hexagonsCenters[35].color=0x70c0c0c0;
+    hexagonsCenters[36].is_used=true;
+    hexagonsCenters[36].color=0x700000ff;
+    hexagonsCenters[38].is_used=true;
+    hexagonsCenters[38].color=0x70c0c0c0;
+    hexagonsCenters[39].is_used=true;
+    hexagonsCenters[39].color=0x70004b96;
+    hexagonsCenters[40].is_used=true;
+    hexagonsCenters[40].color=0x70cbc0ff;
+
+    return displayString;
+}
+
+char* map4_menu(center* hexagonsCenters){
+    char* displayString=malloc(25*sizeof(char));
+    displayString[0]='\0';
+    strcpy(displayString,"Your color is GREEN!");
+    colors=malloc(6*sizeof(color));
+    colors[0].color=0x7000ff00; //green
+    colors[0].is_used=true;
+    colors[1].color=0x70ff0000; //blue
+    colors[1].is_used=false;
+    colors[2].color=0x700000ff; //red
+    colors[2].is_used=true;
+    colors[3].color=0x70cbc0ff; //pink
+    colors[3].is_used=true;
+    colors[4].color=0x70004b96; //brown
+    colors[4].is_used=true;
+    colors[5].color=0x708b008b; //purple
+    colors[5].is_used=true;
+
+    hexagonsCenters[0].is_used=true;
+    hexagonsCenters[0].color=0x70c0c0c0;
+    hexagonsCenters[3].is_used=true;
+    hexagonsCenters[3].color=0x70c0c0c0;
+    hexagonsCenters[4].is_used=true;
+    hexagonsCenters[4].color=0x708b008b;
+    hexagonsCenters[8].is_used=true;
+    hexagonsCenters[8].color=0x70c0c0c0;
+    hexagonsCenters[9].is_used=true;
+    hexagonsCenters[9].color=0x70c0c0c0;
+    hexagonsCenters[10].is_used=true;
+    hexagonsCenters[10].color=0x70c0c0c0;
+    hexagonsCenters[13].is_used=true;
+    hexagonsCenters[13].color=0x700000ff;
+    hexagonsCenters[15].is_used=true;
+    hexagonsCenters[15].color=0x70c0c0c0;
+    hexagonsCenters[16].is_used=true;
+    hexagonsCenters[16].color=0x708b008b;
+    hexagonsCenters[19].is_used=true;
+    hexagonsCenters[19].color=0x70c0c0c0;
+    hexagonsCenters[20].is_used=true;
+    hexagonsCenters[20].color=0x70c0c0c0;
+    hexagonsCenters[21].is_used=true;
+    hexagonsCenters[21].color=0x70c0c0c0;
+    hexagonsCenters[22].is_used=true;
+    hexagonsCenters[22].color=0x70c0c0c0;
+    hexagonsCenters[24].is_used=true;
+    hexagonsCenters[24].color=0x70c0c0c0;
+    hexagonsCenters[25].is_used=true;
+    hexagonsCenters[25].color=0x70004b96;
+    hexagonsCenters[27].is_used=true;
+    hexagonsCenters[27].color=0x70c0c0c0;
+    hexagonsCenters[28].is_used=true;
+    hexagonsCenters[28].color=0x70c0c0c0;
+    hexagonsCenters[30].is_used=true;
+    hexagonsCenters[30].color=0x70c0c0c0;
+    hexagonsCenters[31].is_used=true;
+    hexagonsCenters[31].color=0x70c0c0c0;
+    hexagonsCenters[34].is_used=true;
+    hexagonsCenters[34].color=0x70cbc0ff;
+    hexagonsCenters[36].is_used=true;
+    hexagonsCenters[36].color=0x70c0c0c0;
+    hexagonsCenters[40].is_used=true;
+    hexagonsCenters[40].color=0x70c0c0c0;
+    hexagonsCenters[42].is_used=true;
+    hexagonsCenters[42].color=0x70cbc0ff;
+    hexagonsCenters[43].is_used=true;
+    hexagonsCenters[43].color=0x70cbc0ff;
+    hexagonsCenters[44].is_used=true;
+    hexagonsCenters[44].color=0x7000ff00;
+    return displayString;
+}

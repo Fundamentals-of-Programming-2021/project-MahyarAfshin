@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<string.h>
-#include<nextPageMenu.h>
+#include"nextPageMenu.h"
 
 int main(){
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);

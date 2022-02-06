@@ -54,22 +54,22 @@ void soldiersAddingByTime(center* hexagonCenters, long long int numOfFrames_from
     }
 }
 
-void addAnAttack(long long int totalNumOfAttacks, int clickedIndex,center* hexagonsCenters){
+void addAnAttack(long long int totalNumOfAttacks, int clickedIndex,center* hexagonsCenters, int tempIndex){
     if(totalNumOfAttacks==1){
         attacks=malloc(sizeof(attack));
     }
     else{
         attacks=realloc(attacks,totalNumOfAttacks*sizeof(attack));
     }
-    attacks[totalNumOfAttacks-1].attackerIndex=clickedIndex;
-    attacks[totalNumOfAttacks-1].defenderIndex=-1;
-    attacks[totalNumOfAttacks-1].numOfSoldiers=hexagonsCenters[clickedIndex].numOfSoldiers;
-    attacks[totalNumOfAttacks-1].color=hexagonsCenters[clickedIndex].color;
+    attacks[totalNumOfAttacks-1].attackerIndex=tempIndex;
+    attacks[totalNumOfAttacks-1].defenderIndex=clickedIndex;
+    attacks[totalNumOfAttacks-1].numOfSoldiers=hexagonsCenters[tempIndex].numOfSoldiers;
+    attacks[totalNumOfAttacks-1].color=hexagonsCenters[tempIndex].color;
     attacks[totalNumOfAttacks-1].firstSoldier=malloc(attacks[totalNumOfAttacks-1].numOfSoldiers*sizeof(soldier));
     for(int i=0; i<attacks[totalNumOfAttacks-1].numOfSoldiers; i++){
-        attacks[totalNumOfAttacks-1].firstSoldier[i].color=hexagonsCenters[clickedIndex].color;
-        attacks[totalNumOfAttacks-1].firstSoldier[i].x_coordinate=hexagonsCenters[clickedIndex].x_coordinate;
-        attacks[totalNumOfAttacks-1].firstSoldier[i].y_coordinate=hexagonsCenters[clickedIndex].y_coordinate;
+        attacks[totalNumOfAttacks-1].firstSoldier[i].color=hexagonsCenters[tempIndex].color;
+        attacks[totalNumOfAttacks-1].firstSoldier[i].x_coordinate=hexagonsCenters[tempIndex].x_coordinate;
+        attacks[totalNumOfAttacks-1].firstSoldier[i].y_coordinate=hexagonsCenters[tempIndex].y_coordinate;
     }
 }
 
