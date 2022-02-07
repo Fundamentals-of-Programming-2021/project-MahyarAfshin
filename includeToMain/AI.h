@@ -1,6 +1,7 @@
 #include<SDL2/SDL_ttf.h>
 #include<SDL2/SDL_image.h>
 #include "map.h"
+#include "users.h"
 
 typedef struct attack_check{
     int attackerIndex;
@@ -170,8 +171,18 @@ int check_forWinner(center* hexagonsCenters, Uint32 playerColor){
     return 0;
 }
 
+long long int score_calc(center* hexagonsCenters){
+    long long int score=0;
+    for(int i=0; i<46; i++){
+        if(hexagonsCenters[i].is_used==true){
+            score+=hexagonsCenters[i].numOfSoldiers;
+        }
+    }
+    return score;
+}
 
-int winnerPage(int state, SDL_Renderer* rend){
+
+int winnerPage(int state, SDL_Renderer* rend, long long int score){
     TTF_Init();
     SDL_Surface* surface=IMG_Load("../resources/menuFirstPage.png");
     SDL_Texture* tex=SDL_CreateTextureFromSurface(rend,surface);
@@ -191,6 +202,9 @@ int winnerPage(int state, SDL_Renderer* rend){
     else{
         strcat(string,"You Lost!");
     }
+    char scoreString[50];
+    scoreString[0]='\0';
+    sprintf(scoreString,"your score: %lld",score);
 
     TTF_Font* font=TTF_OpenFont("../resources/Exported Fonts/Annai MN/AnnaiMN.ttf", 15);
     SDL_Color color={0,0,0,255};
@@ -201,6 +215,13 @@ int winnerPage(int state, SDL_Renderer* rend){
     SDL_QueryTexture(nameTex,NULL,NULL,&nameDest.w,&nameDest.h);
     nameDest.x=(windowWidth-nameDest.w)/2;
     nameDest.y=(windowHeight-boxesHeight)/2+(boxesHeight-nameDest.h)/2;
+    gameName=TTF_RenderText_Solid(font,scoreString,color);
+    SDL_Texture* scoreTex=SDL_CreateTextureFromSurface(rend,gameName);
+    SDL_FreeSurface(gameName);
+    SDL_Rect scoreDest;
+    SDL_QueryTexture(scoreTex,NULL,NULL,&scoreDest.w,&scoreDest.h);
+    scoreDest.x=(windowWidth-scoreDest.w)/2;
+    scoreDest.y=(windowHeight-boxesHeight)/2+(boxesHeight-scoreDest.h)/2+50;
 
     int close=0;
     SDL_Event event;
@@ -214,12 +235,15 @@ int winnerPage(int state, SDL_Renderer* rend){
         }
         SDL_RenderCopy(rend,tex,NULL,&dest);
         SDL_RenderCopy(rend,nameTex,NULL,&nameDest);
+        SDL_RenderCopy(rend,scoreTex,NULL,&scoreDest);
         boxColor(rend,(windowWidth-boxesWidth)/2,(windowHeight-boxesHeight)/2,(windowWidth+boxesWidth)/2,(windowHeight+boxesHeight)/2,0x300000ff);
+        boxColor(rend,(windowWidth-boxesWidth)/2,(windowHeight-boxesHeight)/2+50,(windowWidth+boxesWidth)/2,(windowHeight+boxesHeight)/2+50,0x300000ff);
         SDL_RenderPresent(rend);
         SDL_Delay(1000/FPS);   
     }
     SDL_DestroyTexture(tex);
     SDL_DestroyTexture(nameTex);
+    SDL_DestroyTexture(scoreTex);
     TTF_CloseFont(font);
     TTF_Quit();
     return close;

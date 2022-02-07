@@ -17,6 +17,14 @@ SDL_Rect map2_dest;
 SDL_Rect map3_dest;
 SDL_Rect map4_dest;
 SDL_Rect randomMap_dest;
+SDL_Rect user1_dest;
+SDL_Rect user2_dest;
+SDL_Rect user3_dest;
+SDL_Rect user4_dest;
+SDL_Rect user5_dest;
+SDL_Rect user6_dest;
+SDL_Rect user7_dest;
+SDL_Rect user8_dest;
 
 bool check_inTheBox(int box_upperLeftCorner_x, int box_upperLeftCorner_y){
     SDL_GetMouseState(&mouse_xPosition,&mouse_yPosition);
@@ -36,6 +44,173 @@ void typeTheEnteredName(char name[51], SDL_Rect secondDest, SDL_Color color, SDL
     SDL_RenderCopy(rend,texture,NULL,&enteredName_dest);
     SDL_FreeSurface(enteredName);
     SDL_DestroyTexture(texture);
+}
+
+int display_scoreBoard(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthTex, SDL_Texture* fifthTex, SDL_Texture* tex){
+    bubble_sort_users();
+    TTF_Font* enteredName_font=TTF_OpenFont("../resources/Exported Fonts/Annai MN/AnnaiMN.ttf", 15);
+    SDL_Color color={0,0,0,255};
+    //creating textures
+    SDL_Texture* user1_tex;
+    SDL_Texture* user2_tex;
+    SDL_Texture* user3_tex;
+    SDL_Texture* user4_tex;
+    SDL_Texture* user5_tex;
+    SDL_Texture* user6_tex;
+    SDL_Texture* user7_tex;
+    SDL_Texture* user8_tex;
+    char string[100];
+    sprintf(string,"%s (%lld)",users[0].name,users[0].score);
+    SDL_Surface* gameName=TTF_RenderText_Solid(enteredName_font,string,color);
+    user1_tex=SDL_CreateTextureFromSurface(rend,gameName);
+    SDL_FreeSurface(gameName);
+    SDL_QueryTexture(user1_tex,NULL,NULL,&user1_dest.w,&user1_dest.h);
+    user1_dest.x=(windowWidth-boxesWidth)/2+(boxesWidth-user1_dest.w)/2;
+    user1_dest.y=100+(boxesHeight-user1_dest.h)/2;
+
+    if(numOfUsers>1){
+        sprintf(string,"%s (%lld)",users[1].name,users[1].score);
+        gameName=TTF_RenderText_Solid(enteredName_font,string,color);
+        user2_tex=SDL_CreateTextureFromSurface(rend,gameName);
+        SDL_FreeSurface(gameName);
+        SDL_QueryTexture(user2_tex,NULL,NULL,&user2_dest.w,&user2_dest.h);
+        user2_dest.x=(windowWidth-boxesWidth)/2+(boxesWidth-user2_dest.w)/2;
+        user2_dest.y=150+(boxesHeight-user2_dest.h)/2;
+    }
+
+    if(numOfUsers>2){
+        sprintf(string,"%s (%lld)",users[2].name,users[2].score);
+        gameName=TTF_RenderText_Solid(enteredName_font,string,color);
+        user3_tex=SDL_CreateTextureFromSurface(rend,gameName);
+        SDL_FreeSurface(gameName);
+        SDL_QueryTexture(user3_tex,NULL,NULL,&user3_dest.w,&user3_dest.h);
+        user3_dest.x=(windowWidth-boxesWidth)/2+(boxesWidth-user3_dest.w)/2;
+        user3_dest.y=200+(boxesHeight-user3_dest.h)/2;
+    }
+
+    if(numOfUsers>3){
+        sprintf(string,"%s (%lld)",users[3].name,users[3].score);
+        gameName=TTF_RenderText_Solid(enteredName_font,string,color);
+        user4_tex=SDL_CreateTextureFromSurface(rend,gameName);
+        SDL_FreeSurface(gameName);
+        SDL_QueryTexture(user4_tex,NULL,NULL,&user4_dest.w,&user4_dest.h);
+        user4_dest.x=(windowWidth-boxesWidth)/2+(boxesWidth-user4_dest.w)/2;
+        user4_dest.y=250+(boxesHeight-user4_dest.h)/2;
+    }
+
+    if(numOfUsers>4){
+        sprintf(string,"%s (%lld)",users[4].name,users[4].score);
+        gameName=TTF_RenderText_Solid(enteredName_font,string,color);
+        user5_tex=SDL_CreateTextureFromSurface(rend,gameName);
+        SDL_FreeSurface(gameName);
+        SDL_QueryTexture(user5_tex,NULL,NULL,&user5_dest.w,&user5_dest.h);
+        user5_dest.x=(windowWidth-boxesWidth)/2+(boxesWidth-user5_dest.w)/2;
+        user5_dest.y=300+(boxesHeight-user5_dest.h)/2;
+    }
+
+    if(numOfUsers>5){
+        sprintf(string,"%s (%lld)",users[5].name,users[5].score);
+        gameName=TTF_RenderText_Solid(enteredName_font,string,color);
+        user6_tex=SDL_CreateTextureFromSurface(rend,gameName);
+        SDL_FreeSurface(gameName);
+        SDL_QueryTexture(user6_tex,NULL,NULL,&user6_dest.w,&user6_dest.h);
+        user6_dest.x=(windowWidth-boxesWidth)/2+(boxesWidth-user6_dest.w)/2;
+        user6_dest.y=350+(boxesHeight-user6_dest.h)/2;
+    }
+
+    if(numOfUsers>6){
+        sprintf(string,"%s (%lld)",users[6].name,users[6].score);
+        gameName=TTF_RenderText_Solid(enteredName_font,string,color);
+        user7_tex=SDL_CreateTextureFromSurface(rend,gameName);
+        SDL_FreeSurface(gameName);
+        SDL_QueryTexture(user7_tex,NULL,NULL,&user7_dest.w,&user7_dest.h);
+        user7_dest.x=(windowWidth-boxesWidth)/2+(boxesWidth-user7_dest.w)/2;
+        user7_dest.y=400+(boxesHeight-user7_dest.h)/2;
+    }
+
+    if(numOfUsers>7){
+        sprintf(string,"%s (%lld)",users[7].name,users[7].score);
+        gameName=TTF_RenderText_Solid(enteredName_font,string,color);
+        user8_tex=SDL_CreateTextureFromSurface(rend,gameName);
+        SDL_FreeSurface(gameName);
+        SDL_QueryTexture(user8_tex,NULL,NULL,&user8_dest.w,&user8_dest.h);
+        user8_dest.x=(windowWidth-boxesWidth)/2+(boxesWidth-user8_dest.w)/2;
+        user8_dest.y=450+(boxesHeight-user8_dest.h)/2;
+    }
+
+    
+    int close=0;
+    SDL_Event event;
+    while(close != 1){
+        SDL_SetRenderDrawColor(rend,0xff,0xff,0xff,0xff);
+        SDL_RenderClear(rend);
+        while(SDL_PollEvent(&event)){
+            if(event.type==SDL_QUIT){
+                close=1;
+            }
+        }
+        SDL_RenderCopy(rend,tex,NULL,&dest);
+        SDL_RenderCopy(rend,thirdTex,NULL,&thirdDest);
+        SDL_RenderCopy(rend,fourthTex,NULL,&fourthDest);
+        SDL_RenderCopy(rend,fifthTex,NULL,&fifthDest);
+        SDL_RenderCopy(rend,user1_tex,NULL,&user1_dest);
+        if(numOfUsers>1){
+            SDL_RenderCopy(rend,user2_tex,NULL,&user2_dest);
+        }
+        if(numOfUsers>2){
+            SDL_RenderCopy(rend,user3_tex,NULL,&user3_dest);
+        }
+        if(numOfUsers>3){
+            SDL_RenderCopy(rend,user4_tex,NULL,&user4_dest);
+        }
+        if(numOfUsers>4){
+            SDL_RenderCopy(rend,user5_tex,NULL,&user5_dest);
+        }
+        if(numOfUsers>5){
+            SDL_RenderCopy(rend,user6_tex,NULL,&user6_dest);
+        }
+        if(numOfUsers>6){
+            SDL_RenderCopy(rend,user7_tex,NULL,&user7_dest);
+        }
+        if(numOfUsers>7){
+            SDL_RenderCopy(rend,user8_tex,NULL,&user8_dest);
+        }
+        boxColor(rend,(windowWidth-boxesWidth)/2,100,(windowWidth+boxesWidth)/2,100+boxesHeight,0x300000ff);
+        boxColor(rend,(windowWidth-boxesWidth)/2,150,(windowWidth+boxesWidth)/2,150+boxesHeight,0x300000ff);
+        boxColor(rend,(windowWidth-boxesWidth)/2,200,(windowWidth+boxesWidth)/2,200+boxesHeight,0x300000ff);
+        boxColor(rend,(windowWidth-boxesWidth)/2,250,(windowWidth+boxesWidth)/2,250+boxesHeight,0x300000ff);
+        boxColor(rend,(windowWidth-boxesWidth)/2,300,(windowWidth+boxesWidth)/2,300+boxesHeight,0x300000ff);
+        boxColor(rend,(windowWidth-boxesWidth)/2,350,(windowWidth+boxesWidth)/2,350+boxesHeight,0x300000ff);
+        boxColor(rend,(windowWidth-boxesWidth)/2,400,(windowWidth+boxesWidth)/2,400+boxesHeight,0x300000ff);
+        boxColor(rend,(windowWidth-boxesWidth)/2,450,(windowWidth+boxesWidth)/2,450+boxesHeight,0x300000ff);
+        SDL_RenderPresent(rend);
+        SDL_Delay(1000/FPS); 
+    }
+    SDL_DestroyTexture(user1_tex);
+    if(numOfUsers>1){
+        SDL_DestroyTexture(user2_tex);
+    }
+    if(numOfUsers>2){
+        SDL_DestroyTexture(user3_tex);
+    }
+    if(numOfUsers>3){
+        SDL_DestroyTexture(user4_tex);
+    }
+    if(numOfUsers>4){
+        SDL_DestroyTexture(user5_tex);
+    }
+    if(numOfUsers>5){
+        SDL_DestroyTexture(user6_tex);
+    }
+    if(numOfUsers>6){
+        SDL_DestroyTexture(user7_tex);
+    }
+    if(numOfUsers>7){
+        SDL_DestroyTexture(user8_tex);
+    }
+    TTF_CloseFont(enteredName_font);
+    return close;
+
 }
 
 int thirdPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthTex, SDL_Texture* fifthTex, SDL_Texture* tex){
@@ -162,6 +337,9 @@ int nextPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthT
             else if(event.type==SDL_MOUSEBUTTONDOWN){
                 if(check_inTheBox((windowWidth-boxesWidth)/2,250)==true){
                     close=thirdPageMenu(rend,thirdTex,fourthTex,fifthTex,tex);
+                }
+                else if(check_inTheBox((windowWidth-boxesWidth)/2,350)==true){
+                    close=display_scoreBoard(rend,thirdTex,fourthTex,fifthTex,tex);
                 }
             }
         }

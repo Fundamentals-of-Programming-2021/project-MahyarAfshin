@@ -2,7 +2,9 @@
 #include<string.h>
 #include"nextPageMenu.h"
 
+
 int main(){
+    srand(time(0));
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     TTF_Init();
     SDL_Window* gameWindow=SDL_CreateWindow("state.io",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,windowWidth,windowHeight,0);
@@ -72,6 +74,7 @@ int main(){
                 name[strlen(name)-1]='\0';
             }
             else if(event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_RETURN && strlen(name)){
+                add_new_user(name);
                 close=nextPageMenu(rend,thirdTex,fourthTex,fifthTex,tex);
             }
         }

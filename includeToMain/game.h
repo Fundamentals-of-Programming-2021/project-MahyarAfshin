@@ -23,7 +23,7 @@ int startGame(int mapNum, SDL_Renderer* rend){
             displayString=map4_menu(hexagonsCenters);
             break;
         case 5:
-            displayString=generatingRandomMap(5,20,hexagonsCenters);
+            displayString=generatingRandomMap(5,30,hexagonsCenters);
             break;
     }
     Uint32 playerColor=checkClickedIndexColor(displayString);
@@ -75,8 +75,13 @@ int startGame(int mapNum, SDL_Renderer* rend){
         numOfFrames_fromBegining++;
         int state=check_forWinner(hexagonsCenters,playerColor);
         if(state != 0){
-            close=winnerPage(state,rend);
-
+            long long int score=score_calc(hexagonsCenters);
+            if(state==-1){
+                score*=-1;
+            }
+            users[numOfUsers-1].score=score;
+            updateUsers();
+            close=winnerPage(state,rend,score);
         }
         totalNumOfOponents=setAttackTime_forOponents(playerColor,hexagonsCenters,totalNumOfOponents);
     }

@@ -14,6 +14,7 @@ typedef struct soldier{
     Uint32 color;
     double x_coordinate;
     double y_coordinate;
+    bool is_active;
 }soldier;
 
 typedef struct center{
@@ -70,6 +71,7 @@ void addAnAttack(long long int totalNumOfAttacks, int clickedIndex,center* hexag
         attacks[totalNumOfAttacks-1].firstSoldier[i].color=hexagonsCenters[tempIndex].color;
         attacks[totalNumOfAttacks-1].firstSoldier[i].x_coordinate=hexagonsCenters[tempIndex].x_coordinate;
         attacks[totalNumOfAttacks-1].firstSoldier[i].y_coordinate=hexagonsCenters[tempIndex].y_coordinate;
+        attacks[totalNumOfAttacks-1].firstSoldier[i].is_active=true;
     }
 }
 
@@ -134,14 +136,25 @@ void soldiersCollision(long long int totalNumOfAttacks){
                             double deltaY=attacks[i].firstSoldier[k].y_coordinate-attacks[j].firstSoldier[l].y_coordinate;
                             double distance=sqrt(deltaY*deltaY+deltaX*deltaX);
                             if(distance<=10){
-                                deleteSoldier(i,k,soldiersNum);
-                                deleteSoldier(j,l,soldiersNum_checker);
+                                attacks[i].firstSoldier[k].is_active=false;
+                                attacks[j].firstSoldier[l].is_active=false;
                             }
                         }
                     }
                 }
             }
         }
+    }
+    for(int i=0; i<totalNumOfAttacks; i++){
+        int index=0;
+        for(int j=0; j<attacks[i].numOfSoldiers; j++){
+            if(attacks[i].firstSoldier[j].is_active==true){
+                attacks[i].firstSoldier[index]=attacks[i].firstSoldier[j];
+                index++;
+            }
+        }
+        attacks[i].numOfSoldiers=index;
+        attacks[i].firstSoldier=realloc(attacks[i].firstSoldier,attacks[i].numOfSoldiers*sizeof(soldier));
     }
 }
 
@@ -157,7 +170,7 @@ void soldiersCollisionWithBase(long long int totalNumOfAttacks, center* hexagons
                         double deltaY=attacks[i].firstSoldier[j].y_coordinate-hexagonsCenters[k].y_coordinate;
                         double distance=sqrt(deltaX*deltaX+deltaY*deltaY);
                         if(distance<=15){
-                            deleteSoldier(i,j,soldiersNum);
+                            attacks[i].firstSoldier[j].is_active=false;
                             hexagonsCenters[k].numOfSoldiers--;
                             if(hexagonsCenters[k].numOfSoldiers==-1){
                                 hexagonsCenters[k].numOfSoldiers=1;
@@ -171,13 +184,24 @@ void soldiersCollisionWithBase(long long int totalNumOfAttacks, center* hexagons
                         double deltaY=attacks[i].firstSoldier[j].y_coordinate-hexagonsCenters[k].y_coordinate;
                         double distance=sqrt(deltaX*deltaX+deltaY*deltaY);
                         if(distance<=15){
-                            deleteSoldier(i,j,soldiersNum);
+                            attacks[i].firstSoldier[j].is_active=false;
                             hexagonsCenters[k].numOfSoldiers++;
                         }
                     }
                 }
             }
         }
+    }
+    for(int i=0; i<totalNumOfAttacks; i++){
+        int index=0;
+        for(int j=0; j<attacks[i].numOfSoldiers; j++){
+            if(attacks[i].firstSoldier[j].is_active==true){
+                attacks[i].firstSoldier[index]=attacks[i].firstSoldier[j];
+                index++;
+            }
+        }
+        attacks[i].numOfSoldiers=index;
+        attacks[i].firstSoldier=realloc(attacks[i].firstSoldier,attacks[i].numOfSoldiers*sizeof(soldier));
     }
 }
 

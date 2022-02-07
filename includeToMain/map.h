@@ -111,7 +111,7 @@ char* generatingRandomMap(int numOfOponents, int numOfReigons, center* hexagonsC
     displayString[0]='\0';
 
     int numOfUsedHexagons=0;
-    srand(time(0));
+
     //finding the maximum number of regions for each oponent
     int max_region=1;
     while(max_region*(numOfOponents+1)<numOfReigons){
@@ -130,7 +130,7 @@ char* generatingRandomMap(int numOfOponents, int numOfReigons, center* hexagonsC
     for(int i=0; i<6; i++){
         colors[i].is_used=false;
     }
-
+    
     //filling oponents reigons randomly (in i=0 the players reigons are filling and the color of player will be displayed at top of the screen)
     for(int i=0; i<numOfOponents+1; i++){
         //random color for oponent
@@ -187,7 +187,7 @@ char* generatingRandomMap(int numOfOponents, int numOfReigons, center* hexagonsC
     for(int i=0; i<numOfReigons-numOfUsedHexagons; i++){
         int reigonIndex=rand()%46;
         while(hexagonsCenters[reigonIndex].is_used==true){
-            reigonIndex=rand()%6;
+            reigonIndex=rand()%46;
         }
         hexagonsCenters[reigonIndex].color=0x70c0c0c0;
         hexagonsCenters[reigonIndex].is_used=true;

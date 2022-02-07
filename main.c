@@ -59,11 +59,11 @@ int main(){
         SDL_Delay(1000/FPS);
         soldiersAddingByTime(hexagonsCenters,numOfFrames_fromBegining);
         numOfFrames_fromBegining++;
-        int state=check_forWinner(hexagonsCenters,playerColor);
-        if(state != 0){
-            close=winnerPage(state,rend);
+        // int state=check_forWinner(hexagonsCenters,playerColor);
+        // if(state != 0){
+        //     close=winnerPage(state,rend,);
 
-        }
+        // }
         totalNumOfOponents=setAttackTime_forOponents(playerColor,hexagonsCenters,totalNumOfOponents);
     }
     SDL_DestroyRenderer(rend);
