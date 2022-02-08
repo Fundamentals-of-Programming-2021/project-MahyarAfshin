@@ -248,3 +248,20 @@ int winnerPage(int state, SDL_Renderer* rend, long long int score){
     TTF_Quit();
     return close;
 }
+
+void deleteOponents(Uint32 playerColor, center* hexagonsCenters){
+    for(int i=0; i<6; i++){
+        if(colors[i].is_used==true && colors[i].color != playerColor){
+            bool should_delete=true;
+            for(int j=0; j<46; j++){
+                if(hexagonsCenters[j].color==colors[i].color){
+                    should_delete=false;
+                    break;
+                }
+            }
+            if(should_delete==true){
+                colors[i].is_used=false;
+            }
+        }
+    }
+}

@@ -10,6 +10,9 @@ int startGame(int mapNum, SDL_Renderer* rend){
     center* hexagonsCenters=createMapTemplate(rend);
     char* displayString;
     switch(mapNum){
+        case 0:
+            displayString=map_memory(hexagonsCenters);
+            break;
         case 1:
             displayString=map1_menu(hexagonsCenters);
             break;
@@ -36,6 +39,7 @@ int startGame(int mapNum, SDL_Renderer* rend){
     bool chosen_territory_for_attack=false;
     long long int totalNumOfAttacks=0;
     int tempIndex=-1;
+    initializePotions();
     while(close != 1){
         SDL_SetRenderDrawColor(rend,0xff,0xff,0xff,0xff);
         SDL_RenderClear(rend);
@@ -63,12 +67,36 @@ int startGame(int mapNum, SDL_Renderer* rend){
             }
         }
         getMousePosition(hexagonsCenters,rend,chosen_territory_for_attack,mouse_xPosition,mouse_yPosition);
+        printf("1\n");
+        fflush(stdout);
         AI_attack(hexagonsCenters,&totalNumOfAttacks,totalNumOfOponents,numOfFrames_fromBegining);
+        printf("2\n");
+        fflush(stdout);
         attacksInProgress(hexagonsCenters,totalNumOfAttacks);
+        printf("3\n");
+        fflush(stdout);
         soldiersCollision(totalNumOfAttacks);
+        printf("4\n");
+        fflush(stdout);
         soldiersCollisionWithBase(totalNumOfAttacks,hexagonsCenters);
+        printf("5\n");
+        fflush(stdout);
         deleteFinishedAttacks(&totalNumOfAttacks);
+        printf("6\n");
+        fflush(stdout);
         displaySoldiers(rend,hexagonsCenters,totalNumOfAttacks);
+        printf("7\n");
+        fflush(stdout);
+        deployPotion(numOfFrames_fromBegining,hexagonsCenters);
+        printf("8\n");
+        fflush(stdout);
+        displayPotions(rend,numOfFrames_fromBegining);
+        printf("9\n");
+        fflush(stdout);
+        soldiersCollision_withPotion(totalNumOfAttacks,totalNumOfOponents,numOfFrames_fromBegining);
+        potionsLogic(numOfFrames_fromBegining,hexagonsCenters);
+        updateTheSpeedCoefficient(totalNumOfAttacks,hexagonsCenters);
+        deleteOponents(playerColor,hexagonsCenters);
         SDL_RenderPresent(rend);
         SDL_Delay(1000/FPS);
         soldiersAddingByTime(hexagonsCenters,numOfFrames_fromBegining);
@@ -79,7 +107,7 @@ int startGame(int mapNum, SDL_Renderer* rend){
             if(state==-1){
                 score*=-1;
             }
-            users[numOfUsers-1].score=score;
+            users[numOfUsers-1].score=+score;
             updateUsers();
             close=winnerPage(state,rend,score);
         }

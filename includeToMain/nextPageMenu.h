@@ -2,7 +2,6 @@
 #include<SDL2/SDL_image.h>
 #include "game.h"
 
-
 SDL_Rect dest;
 SDL_Rect nameDest;
 SDL_Rect secondDest;
@@ -17,6 +16,7 @@ SDL_Rect map2_dest;
 SDL_Rect map3_dest;
 SDL_Rect map4_dest;
 SDL_Rect randomMap_dest;
+SDL_Rect memoryMap_dest;
 SDL_Rect user1_dest;
 SDL_Rect user2_dest;
 SDL_Rect user3_dest;
@@ -247,6 +247,13 @@ int thirdPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourth
     SDL_QueryTexture(randomMap_tex,NULL,NULL,&randomMap_dest.w,&randomMap_dest.h);
     randomMap_dest.x=(windowWidth-boxesWidth)/2+(boxesWidth-randomMap_dest.w)/2;
     randomMap_dest.y=400+(boxesHeight-randomMap_dest.h)/2;
+    gameName=TTF_RenderText_Solid(enteredName_font,"Map 0",color);
+    SDL_Texture* memoryMap_tex=SDL_CreateTextureFromSurface(rend,gameName);
+    SDL_FreeSurface(gameName);
+    SDL_QueryTexture(memoryMap_tex,NULL,NULL,&memoryMap_dest.w,&memoryMap_dest.h);
+    memoryMap_dest.x=(windowWidth-boxesWidth)/2+(boxesWidth-memoryMap_dest.w)/2;
+    memoryMap_dest.y=150+(boxesHeight-memoryMap_dest.h)/2;
+
 
     int close=0;
     SDL_Event event;
@@ -273,6 +280,9 @@ int thirdPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourth
                 else if(check_inTheBox((windowWidth-boxesWidth)/2,400)==true){
                     close=startGame(5,rend);
                 }
+                else if(check_inTheBox((windowWidth-boxesWidth)/2,150)==true){
+                    close=startGame(0,rend);
+                }
             }
         }
         SDL_RenderCopy(rend,tex,NULL,&dest);
@@ -284,6 +294,8 @@ int thirdPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourth
         SDL_RenderCopy(rend,map3_tex,NULL,&map3_dest);
         SDL_RenderCopy(rend,map4_tex,NULL,&map4_dest);
         SDL_RenderCopy(rend,randomMap_tex,NULL,&randomMap_dest);
+        SDL_RenderCopy(rend,memoryMap_tex,NULL,&memoryMap_dest);
+        boxColor(rend,(windowWidth-boxesWidth)/2,150,(windowWidth+boxesWidth)/2,150+boxesHeight,0x300000ff);
         boxColor(rend,(windowWidth-boxesWidth)/2,200,(windowWidth+boxesWidth)/2,200+boxesHeight,0x300000ff);
         boxColor(rend,(windowWidth-boxesWidth)/2,250,(windowWidth+boxesWidth)/2,250+boxesHeight,0x300000ff);
         boxColor(rend,(windowWidth-boxesWidth)/2,300,(windowWidth+boxesWidth)/2,300+boxesHeight,0x300000ff);

@@ -15,6 +15,7 @@ typedef struct soldier{
     double x_coordinate;
     double y_coordinate;
     bool is_active;
+    int speedCoefficient;
 }soldier;
 
 typedef struct center{
@@ -23,6 +24,9 @@ typedef struct center{
     Uint32 color;
     bool is_used;
     int numOfSoldiers;
+    int speedCoefficient;
+    bool no_end;
+    int soldierAddCoefficient;
 }center;
 
 typedef struct attack{
@@ -48,8 +52,15 @@ void soldiers_beginigOfTheGame(center* hexagonCenters){
 void soldiersAddingByTime(center* hexagonCenters, long long int numOfFrames_fromBeginig){
     if(numOfFrames_fromBeginig%120==0){
         for(int i=0; i<46; i++){
-            if(hexagonCenters[i].is_used==true && hexagonCenters[i].numOfSoldiers<40 && hexagonCenters[i].color != 0x70c0c0c0){
-                hexagonCenters[i].numOfSoldiers++;
+            if(hexagonCenters[i].no_end==false){
+                if(hexagonCenters[i].is_used==true && hexagonCenters[i].numOfSoldiers<40 && hexagonCenters[i].color != 0x70c0c0c0){
+                    hexagonCenters[i].numOfSoldiers+=hexagonCenters[i].soldierAddCoefficient;
+                }
+            }
+            else{
+                if(hexagonCenters[i].is_used==true && hexagonCenters[i].color != 0x70c0c0c0){
+                    hexagonCenters[i].numOfSoldiers+=hexagonCenters[i].soldierAddCoefficient;
+                }
             }
         }
     }
@@ -72,6 +83,7 @@ void addAnAttack(long long int totalNumOfAttacks, int clickedIndex,center* hexag
         attacks[totalNumOfAttacks-1].firstSoldier[i].x_coordinate=hexagonsCenters[tempIndex].x_coordinate;
         attacks[totalNumOfAttacks-1].firstSoldier[i].y_coordinate=hexagonsCenters[tempIndex].y_coordinate;
         attacks[totalNumOfAttacks-1].firstSoldier[i].is_active=true;
+        attacks[totalNumOfAttacks-1].firstSoldier[i].speedCoefficient=1;
     }
 }
 
@@ -87,15 +99,15 @@ void attacksInProgress(center* hexagonsCenters, long long int totalNumOfAttacks)
                     double deltaX=attacks[i].firstSoldier[j].x_coordinate-hexagonsCenters[attacks[i].defenderIndex].x_coordinate;
                     double deltaY=attacks[i].firstSoldier[j].y_coordinate-hexagonsCenters[attacks[i].defenderIndex].y_coordinate;
                     double distance=sqrt(deltaX*deltaX+deltaY*deltaY);
-                    attacks[i].firstSoldier[j].x_coordinate-=deltaX/distance*soldiersSpeed/FPS;
-                    attacks[i].firstSoldier[j].y_coordinate-=deltaY/distance*soldiersSpeed/FPS;
+                    attacks[i].firstSoldier[j].x_coordinate-=deltaX/distance*soldiersSpeed/FPS*attacks[i].firstSoldier[j].speedCoefficient;
+                    attacks[i].firstSoldier[j].y_coordinate-=deltaY/distance*soldiersSpeed/FPS*attacks[i].firstSoldier[j].speedCoefficient;
                 }
                 else{
                     double deltaX=attacks[i].firstSoldier[j].x_coordinate-hexagonsCenters[attacks[i].defenderIndex].x_coordinate;
                     double deltaY=attacks[i].firstSoldier[j].y_coordinate-hexagonsCenters[attacks[i].defenderIndex].y_coordinate;
                     double distance=sqrt(deltaX*deltaX+deltaY*deltaY);
-                    attacks[i].firstSoldier[j].x_coordinate-=deltaX/distance*soldiersSpeed/FPS;
-                    attacks[i].firstSoldier[j].y_coordinate-=deltaY/distance*soldiersSpeed/FPS;
+                    attacks[i].firstSoldier[j].x_coordinate-=deltaX/distance*soldiersSpeed/FPS*attacks[i].firstSoldier[j].speedCoefficient;
+                    attacks[i].firstSoldier[j].y_coordinate-=deltaY/distance*soldiersSpeed/FPS*attacks[i].firstSoldier[j].speedCoefficient;
                     break;
 
                 }
@@ -223,5 +235,18 @@ void deleteFinishedAttacks(long long int* totalNumOfAttacks){
         (*totalNumOfAttacks)--;
         attacks=realloc(attacks,(*totalNumOfAttacks)*sizeof(attack));
         deletedIndex=findFinishedAttack(*totalNumOfAttacks);
+    }
+}
+
+void updateTheSpeedCoefficient(long long int totalNumOfAttacks, center* hexagonsCenters){
+    for(long long int i=0; i<totalNumOfAttacks; i++){
+        for(int j=0; j<attacks[i].numOfSoldiers; j++){
+            for(int k=0; k<46; k++){
+                if(hexagonsCenters[k].color==attacks[i].color){
+                    attacks[i].firstSoldier[j].speedCoefficient=hexagonsCenters[k].speedCoefficient;
+                    break;
+                }
+            }
+        }
     }
 }

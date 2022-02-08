@@ -106,6 +106,11 @@ center* createMapTemplate(SDL_Renderer* rend){
 }
 
 char* generatingRandomMap(int numOfOponents, int numOfReigons, center* hexagonsCenters){
+    for(int i=0; i<46; i++){
+        hexagonsCenters[i].speedCoefficient=1;
+        hexagonsCenters[i].no_end=false;
+        hexagonsCenters[i].soldierAddCoefficient=1;
+    }
     //initializing the displaying string
     char* displayString=malloc(25*sizeof(char));
     displayString[0]='\0';
@@ -252,6 +257,11 @@ Uint32 checkClickedIndexColor(char* displayString){
 }
 
 char* map1_menu(center* hexagonsCenters){
+    for(int i=0; i<46; i++){
+        hexagonsCenters[i].speedCoefficient=1;
+        hexagonsCenters[i].no_end=false;
+        hexagonsCenters[i].soldierAddCoefficient=1;
+    }
     char* displayString=malloc(25*sizeof(char));
     displayString[0]='\0';
     strcpy(displayString,"Your color is RED!");
@@ -314,6 +324,11 @@ char* map1_menu(center* hexagonsCenters){
 }
 
 char* map2_menu(center* hexagonsCenters){
+    for(int i=0; i<46; i++){
+        hexagonsCenters[i].speedCoefficient=1;
+        hexagonsCenters[i].no_end=false;
+        hexagonsCenters[i].soldierAddCoefficient=1;
+    }
     char* displayString=malloc(25*sizeof(char));
     displayString[0]='\0';
     strcpy(displayString,"Your color is PURPLE!");
@@ -376,6 +391,11 @@ char* map2_menu(center* hexagonsCenters){
 }
 
 char* map3_menu(center* hexagonsCenters){
+    for(int i=0; i<46; i++){
+        hexagonsCenters[i].speedCoefficient=1;
+        hexagonsCenters[i].no_end=false;
+        hexagonsCenters[i].soldierAddCoefficient=1;
+    }
     char* displayString=malloc(25*sizeof(char));
     displayString[0]='\0';
     strcpy(displayString,"Your color is BROWN!");
@@ -438,6 +458,11 @@ char* map3_menu(center* hexagonsCenters){
 }
 
 char* map4_menu(center* hexagonsCenters){
+    for(int i=0; i<46; i++){
+        hexagonsCenters[i].speedCoefficient=1;
+        hexagonsCenters[i].no_end=false;
+        hexagonsCenters[i].soldierAddCoefficient=1;
+    }
     char* displayString=malloc(25*sizeof(char));
     displayString[0]='\0';
     strcpy(displayString,"Your color is GREEN!");
@@ -507,3 +532,57 @@ char* map4_menu(center* hexagonsCenters){
     hexagonsCenters[44].color=0x7000ff00;
     return displayString;
 }
+
+char* map_memory(center* hexagonsCenters){
+    for(int i=0; i<46; i++){
+        hexagonsCenters[i].speedCoefficient=1;
+        hexagonsCenters[i].soldierAddCoefficient=1;
+        hexagonsCenters[i].no_end=false;
+    }
+    char* displayString=malloc(25*sizeof(char));
+    displayString[0]='\0';
+    strcpy(displayString,"Your color is BLUE!");
+    colors=malloc(6*sizeof(color));
+    colors[0].color=0x7000ff00; //green
+    colors[0].is_used=false;
+    colors[1].color=0x70ff0000; //blue
+    colors[1].is_used=true;
+    colors[2].color=0x700000ff; //red
+    colors[2].is_used=true;
+    colors[3].color=0x70cbc0ff; //pink
+    colors[3].is_used=false;
+    colors[4].color=0x70004b96; //brown
+    colors[4].is_used=false;
+    colors[5].color=0x708b008b; //purple
+    colors[5].is_used=false;
+
+    hexagonsCenters[1].is_used=true;
+    hexagonsCenters[1].color=0x70ff0000;
+    hexagonsCenters[3].is_used=true;
+    hexagonsCenters[3].color=0x70ff0000;
+    hexagonsCenters[5].is_used=true;
+    hexagonsCenters[5].color=0x70ff0000;
+    hexagonsCenters[9].is_used=true;
+    hexagonsCenters[9].color=0x70ff0000;
+    hexagonsCenters[10].is_used=true;
+    hexagonsCenters[10].color=0x70ff0000;
+    hexagonsCenters[15].is_used=true;
+    hexagonsCenters[15].color=0x70ff0000;
+    hexagonsCenters[18].is_used=true;
+    hexagonsCenters[18].color=0x70ff0000;
+    hexagonsCenters[36].is_used=true;
+    hexagonsCenters[36].color=0x70ff0000;
+    hexagonsCenters[39].is_used=true;
+    hexagonsCenters[39].color=0x70ff0000;
+    hexagonsCenters[40].is_used=true;
+    hexagonsCenters[40].color=0x70ff0000;
+    hexagonsCenters[43].is_used=true;
+    hexagonsCenters[43].color=0x70ff0000;
+    hexagonsCenters[45].is_used=true;
+    hexagonsCenters[45].color=0x70ff0000;
+    hexagonsCenters[24].is_used=true;
+    hexagonsCenters[24].color=0x700000ff;
+
+    return displayString;
+}
+
