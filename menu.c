@@ -2,8 +2,9 @@
 #include<string.h>
 #include"nextPageMenu.h"
 
-
 int main(){
+    file=fopen("log.txt","w");
+    fuckYou=fopen("fuckyou.txt","w");
     srand(time(0));
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     TTF_Init();
@@ -102,5 +103,7 @@ int main(){
     SDL_DestroyWindow(gameWindow);
     TTF_Quit();
     SDL_Quit();
+    fclose(file);
+    fclose(fuckYou);
     return 0;
 }

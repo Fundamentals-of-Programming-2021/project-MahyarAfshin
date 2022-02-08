@@ -14,6 +14,8 @@ typedef struct potion{
 }potion;
 
 potion* potions=NULL;
+FILE* file;
+FILE* fuckYou;
 
 void drawThePotion(SDL_Renderer* rend, Uint32 color, int x_position, int y_position){
     boxColor(rend,x_position,y_position,x_position+20,y_position+10,color);
@@ -23,8 +25,8 @@ void drawThePotion(SDL_Renderer* rend, Uint32 color, int x_position, int y_posit
 void initializePotions(){
     potions=malloc(4*sizeof(potion));
     for(int i=0; i<4; i++){
-        potions[i].durationToWait=rand()%7+1;
-        potions[i].durationToBeEnabled=rand()%7+1;
+        potions[i].durationToWait=rand()%4+4;
+        potions[i].durationToBeEnabled=rand()%4+4;
         potions[i].is_deployed=false;
         potions[i].is_enabled=false;
     }
@@ -66,14 +68,17 @@ void findPotionCoordinates_random(center* hexagonsCenters, int* x_position, int*
 void deployPotion(long long int numOfFrames_fromBegining, center* hexagonsCenters){
     if(numOfFrames_fromBegining%900==800){
         int potionIndex=rand()%4;
+        fprintf(file,"%d\n",potionIndex);
         potions[potionIndex].is_deployed=true;
         findPotionCoordinates_random(hexagonsCenters,&potions[potionIndex].x_position,&potions[potionIndex].y_position);
+        potions[potionIndex].frameDeployed=numOfFrames_fromBegining;
     }
 }
 
 void displayPotions(SDL_Renderer* rend, long long int numOfFrames_fromBegining){
     for(int i=0; i<4; i++){
         if(potions[i].is_deployed==true){
+            fprintf(fuckYou,"%d\n",i);
             if(numOfFrames_fromBegining-potions[i].frameDeployed<=potions[i].durationToWait*60){
                 drawThePotion(rend,potions[i].color,potions[i].x_position,potions[i].y_position);
             }
