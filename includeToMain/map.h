@@ -110,6 +110,7 @@ char* generatingRandomMap(int numOfOponents, int numOfReigons, center* hexagonsC
         hexagonsCenters[i].speedCoefficient=1;
         hexagonsCenters[i].no_end=false;
         hexagonsCenters[i].soldierAddCoefficient=1;
+        hexagonsCenters[i].is_potionActive=false;
     }
     //initializing the displaying string
     char* displayString=malloc(25*sizeof(char));
@@ -197,6 +198,11 @@ char* generatingRandomMap(int numOfOponents, int numOfReigons, center* hexagonsC
         hexagonsCenters[reigonIndex].color=0x70c0c0c0;
         hexagonsCenters[reigonIndex].is_used=true;
     }
+    for(int i=0; i<46; i++){
+        if(hexagonsCenters[i].is_used==true){
+            hexagonsCenters[i].centerColor=hexagonsCenters[i].color+0x8f000000;
+        }
+    }
     return displayString;
 }
 
@@ -205,7 +211,7 @@ void putTheMapOnTheRenderer(center* hexagonsCenters, SDL_Renderer* rend, char* d
         if(hexagonsCenters[i].is_used==true){
             hexagon* shape=creatingHexagons(hexagonsCenters[i],hexagon_radii);
             filledPolygonColor(rend,shape->x_coordinates,shape->y_coordinates,6,hexagonsCenters[i].color);
-            filledCircleColor(rend,hexagonsCenters[i].x_coordinate,hexagonsCenters[i].y_coordinate,10,hexagonsCenters[i].color+0x8f000000);
+            filledCircleColor(rend,hexagonsCenters[i].x_coordinate,hexagonsCenters[i].y_coordinate,10,hexagonsCenters[i].centerColor);
             char soldiersNumber[50];
             sprintf(soldiersNumber,"%d",hexagonsCenters[i].numOfSoldiers);
             stringColor(rend,hexagonsCenters[i].x_coordinate-strlen(soldiersNumber)*4,hexagonsCenters[i].y_coordinate+12,soldiersNumber,0xff000000);
@@ -261,6 +267,7 @@ char* map1_menu(center* hexagonsCenters){
         hexagonsCenters[i].speedCoefficient=1;
         hexagonsCenters[i].no_end=false;
         hexagonsCenters[i].soldierAddCoefficient=1;
+        hexagonsCenters[i].is_potionActive=false;
     }
     char* displayString=malloc(25*sizeof(char));
     displayString[0]='\0';
@@ -319,6 +326,11 @@ char* map1_menu(center* hexagonsCenters){
     hexagonsCenters[41].color=0x708b008b;
     hexagonsCenters[45].is_used=true;
     hexagonsCenters[45].color=0x70c0c0c0;
+    for(int i=0; i<46; i++){
+        if(hexagonsCenters[i].is_used==true){
+            hexagonsCenters[i].centerColor=hexagonsCenters[i].color+0x8f000000;
+        }
+    }
 
     return displayString;
 }
@@ -328,6 +340,7 @@ char* map2_menu(center* hexagonsCenters){
         hexagonsCenters[i].speedCoefficient=1;
         hexagonsCenters[i].no_end=false;
         hexagonsCenters[i].soldierAddCoefficient=1;
+        hexagonsCenters[i].is_potionActive=false;
     }
     char* displayString=malloc(25*sizeof(char));
     displayString[0]='\0';
@@ -386,6 +399,11 @@ char* map2_menu(center* hexagonsCenters){
     hexagonsCenters[43].color=0x70c0c0c0;
     hexagonsCenters[45].is_used=true;
     hexagonsCenters[45].color=0x70c0c0c0;
+    for(int i=0; i<46; i++){
+        if(hexagonsCenters[i].is_used==true){
+            hexagonsCenters[i].centerColor=hexagonsCenters[i].color+0x8f000000;
+        }
+    }
 
     return displayString;
 }
@@ -395,6 +413,7 @@ char* map3_menu(center* hexagonsCenters){
         hexagonsCenters[i].speedCoefficient=1;
         hexagonsCenters[i].no_end=false;
         hexagonsCenters[i].soldierAddCoefficient=1;
+        hexagonsCenters[i].is_potionActive=false;
     }
     char* displayString=malloc(25*sizeof(char));
     displayString[0]='\0';
@@ -453,6 +472,11 @@ char* map3_menu(center* hexagonsCenters){
     hexagonsCenters[39].color=0x70004b96;
     hexagonsCenters[40].is_used=true;
     hexagonsCenters[40].color=0x70cbc0ff;
+    for(int i=0; i<46; i++){
+        if(hexagonsCenters[i].is_used==true){
+            hexagonsCenters[i].centerColor=hexagonsCenters[i].color+0x8f000000;
+        }
+    }
 
     return displayString;
 }
@@ -462,6 +486,7 @@ char* map4_menu(center* hexagonsCenters){
         hexagonsCenters[i].speedCoefficient=1;
         hexagonsCenters[i].no_end=false;
         hexagonsCenters[i].soldierAddCoefficient=1;
+        hexagonsCenters[i].is_potionActive=false;
     }
     char* displayString=malloc(25*sizeof(char));
     displayString[0]='\0';
@@ -530,6 +555,11 @@ char* map4_menu(center* hexagonsCenters){
     hexagonsCenters[43].color=0x70cbc0ff;
     hexagonsCenters[44].is_used=true;
     hexagonsCenters[44].color=0x7000ff00;
+    for(int i=0; i<46; i++){
+        if(hexagonsCenters[i].is_used==true){
+            hexagonsCenters[i].centerColor=hexagonsCenters[i].color+0x8f000000;
+        }
+    }
     return displayString;
 }
 
@@ -538,6 +568,7 @@ char* map_memory(center* hexagonsCenters){
         hexagonsCenters[i].speedCoefficient=1;
         hexagonsCenters[i].soldierAddCoefficient=1;
         hexagonsCenters[i].no_end=false;
+        hexagonsCenters[i].is_potionActive=false;
     }
     char* displayString=malloc(25*sizeof(char));
     displayString[0]='\0';
@@ -582,6 +613,11 @@ char* map_memory(center* hexagonsCenters){
     hexagonsCenters[45].color=0x70ff0000;
     hexagonsCenters[24].is_used=true;
     hexagonsCenters[24].color=0x700000ff;
+    for(int i=0; i<46; i++){
+        if(hexagonsCenters[i].is_used==true){
+            hexagonsCenters[i].centerColor=hexagonsCenters[i].color+0x8f000000;
+        }
+    }
 
     return displayString;
 }

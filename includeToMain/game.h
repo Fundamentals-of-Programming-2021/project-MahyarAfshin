@@ -4,7 +4,7 @@
 int mouse_xPosition;
 int mouse_yPosition;
 
-int startGame(int mapNum, SDL_Renderer* rend){
+int startGame(int mapNum, SDL_Renderer* rend, long long int userIndex){
     SDL_SetRenderDrawColor(rend,0xff,0xff,0xff,0xff);
     SDL_RenderClear(rend);
     center* hexagonsCenters=createMapTemplate(rend);
@@ -93,9 +93,11 @@ int startGame(int mapNum, SDL_Renderer* rend){
         displayPotions(rend,numOfFrames_fromBegining);
         printf("9\n");
         fflush(stdout);
-        soldiersCollision_withPotion(totalNumOfAttacks,totalNumOfOponents,numOfFrames_fromBegining);
+        soldiersCollision_withPotion(totalNumOfAttacks,totalNumOfOponents,numOfFrames_fromBegining,hexagonsCenters);
         potionsLogic(numOfFrames_fromBegining,hexagonsCenters);
         updateTheSpeedCoefficient(totalNumOfAttacks,hexagonsCenters);
+        update_isPotionActive(totalNumOfAttacks,hexagonsCenters);
+        potionFade(hexagonsCenters,numOfFrames_fromBegining);
         deleteOponents(playerColor,hexagonsCenters);
         SDL_RenderPresent(rend);
         SDL_Delay(1000/FPS);
@@ -107,7 +109,7 @@ int startGame(int mapNum, SDL_Renderer* rend){
             if(state==-1){
                 score*=-1;
             }
-            users[numOfUsers-1].score=+score;
+            users[userIndex].score+=score;
             updateUsers();
             close=winnerPage(state,rend,score);
         }

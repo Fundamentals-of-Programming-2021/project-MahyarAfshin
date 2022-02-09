@@ -75,8 +75,8 @@ int main(){
                 name[strlen(name)-1]='\0';
             }
             else if(event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_RETURN && strlen(name)){
-                add_new_user(name);
-                close=nextPageMenu(rend,thirdTex,fourthTex,fifthTex,tex);
+                long long int userIndex=add_new_user(name);
+                close=nextPageMenu(rend,thirdTex,fourthTex,fifthTex,tex,userIndex);
             }
         }
         SDL_RenderCopy(rend,tex,NULL,&dest);
@@ -105,5 +105,6 @@ int main(){
     SDL_Quit();
     fclose(file);
     fclose(fuckYou);
+    printUser();
     return 0;
 }

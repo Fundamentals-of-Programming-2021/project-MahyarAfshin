@@ -16,6 +16,7 @@ typedef struct soldier{
     double y_coordinate;
     bool is_active;
     int speedCoefficient;
+    bool is_potionActive;
 }soldier;
 
 typedef struct center{
@@ -27,6 +28,8 @@ typedef struct center{
     int speedCoefficient;
     bool no_end;
     int soldierAddCoefficient;
+    bool is_potionActive;
+    Uint32 centerColor;
 }center;
 
 typedef struct attack{
@@ -50,7 +53,7 @@ void soldiers_beginigOfTheGame(center* hexagonCenters){
 
 //bellow function will add a soldier to each hexagon every 2 seconds until it reaches 40 soldiers
 void soldiersAddingByTime(center* hexagonCenters, long long int numOfFrames_fromBeginig){
-    if(numOfFrames_fromBeginig%120==0){
+    if(numOfFrames_fromBeginig%60==0){
         for(int i=0; i<46; i++){
             if(hexagonCenters[i].no_end==false){
                 if(hexagonCenters[i].is_used==true && hexagonCenters[i].numOfSoldiers<40 && hexagonCenters[i].color != 0x70c0c0c0){
@@ -84,32 +87,72 @@ void addAnAttack(long long int totalNumOfAttacks, int clickedIndex,center* hexag
         attacks[totalNumOfAttacks-1].firstSoldier[i].y_coordinate=hexagonsCenters[tempIndex].y_coordinate;
         attacks[totalNumOfAttacks-1].firstSoldier[i].is_active=true;
         attacks[totalNumOfAttacks-1].firstSoldier[i].speedCoefficient=1;
+        attacks[totalNumOfAttacks-1].firstSoldier[i].is_potionActive=false;
     }
 }
 
 void attacksInProgress(center* hexagonsCenters, long long int totalNumOfAttacks){
+    printf("here 1\n");
+    fflush(stdout);
     for(long long int i=0; i<totalNumOfAttacks; i++){
+        printf("here 2\n");
+        fflush(stdout);
         if(attacks[i].defenderIndex != -1){
+            printf("here 3\n");
+            fflush(stdout);
             int soldiersNum=attacks[i].numOfSoldiers;
+            printf("here 4\n");
+            fflush(stdout);
             for(int j=0; j<soldiersNum; j++){
+                printf("here 5\n");
+                fflush(stdout);
                 double deltaX_attacker=attacks[i].firstSoldier[j].x_coordinate-hexagonsCenters[attacks[i].attackerIndex].x_coordinate;
+                printf("here 6\n");
+                fflush(stdout);
                 double deltaY_attacker=attacks[i].firstSoldier[j].y_coordinate-hexagonsCenters[attacks[i].attackerIndex].y_coordinate;
+                printf("here 7\n");
+                fflush(stdout);
                 double distance_attacker=sqrt(deltaX_attacker*deltaX_attacker+deltaY_attacker*deltaY_attacker);
+                printf("here 8\n");
+                fflush(stdout);
                 if(distance_attacker>=15){
+                    printf("here 9\n");
+                    fflush(stdout);
                     double deltaX=attacks[i].firstSoldier[j].x_coordinate-hexagonsCenters[attacks[i].defenderIndex].x_coordinate;
+                    printf("here 10\n");
+                    fflush(stdout);
                     double deltaY=attacks[i].firstSoldier[j].y_coordinate-hexagonsCenters[attacks[i].defenderIndex].y_coordinate;
+                    printf("here 11\n");
+                    fflush(stdout);
                     double distance=sqrt(deltaX*deltaX+deltaY*deltaY);
+                    printf("here 12\n");
+                    fflush(stdout);
                     attacks[i].firstSoldier[j].x_coordinate-=deltaX/distance*soldiersSpeed/FPS*attacks[i].firstSoldier[j].speedCoefficient;
+                    printf("here 13\n");
+                    fflush(stdout);
                     attacks[i].firstSoldier[j].y_coordinate-=deltaY/distance*soldiersSpeed/FPS*attacks[i].firstSoldier[j].speedCoefficient;
+                    printf("here 14\n");
+                    fflush(stdout);
                 }
                 else{
+                    printf("here 15\n");
+                    fflush(stdout);
                     double deltaX=attacks[i].firstSoldier[j].x_coordinate-hexagonsCenters[attacks[i].defenderIndex].x_coordinate;
+                    printf("here 16\n");
+                    fflush(stdout);
                     double deltaY=attacks[i].firstSoldier[j].y_coordinate-hexagonsCenters[attacks[i].defenderIndex].y_coordinate;
+                    printf("here 17\n");
+                    fflush(stdout);
                     double distance=sqrt(deltaX*deltaX+deltaY*deltaY);
+                    printf("here 18\n");
+                    fflush(stdout);
                     attacks[i].firstSoldier[j].x_coordinate-=deltaX/distance*soldiersSpeed/FPS*attacks[i].firstSoldier[j].speedCoefficient;
+                    printf("here 19\n");
+                    fflush(stdout);
                     attacks[i].firstSoldier[j].y_coordinate-=deltaY/distance*soldiersSpeed/FPS*attacks[i].firstSoldier[j].speedCoefficient;
+                    printf("here 20\n");
+                    fflush(stdout);
                     break;
-
                 }
             }
         }
@@ -187,6 +230,8 @@ void soldiersCollisionWithBase(long long int totalNumOfAttacks, center* hexagons
                             if(hexagonsCenters[k].numOfSoldiers==-1){
                                 hexagonsCenters[k].numOfSoldiers=1;
                                 hexagonsCenters[k].color=attacks[i].color;
+                                hexagonsCenters[k].centerColor=hexagonsCenters[k].color+0x8f000000;
+                                
                             }
                         }
                     }
@@ -244,6 +289,19 @@ void updateTheSpeedCoefficient(long long int totalNumOfAttacks, center* hexagons
             for(int k=0; k<46; k++){
                 if(hexagonsCenters[k].color==attacks[i].color){
                     attacks[i].firstSoldier[j].speedCoefficient=hexagonsCenters[k].speedCoefficient;
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void update_isPotionActive(long long int totalNumOfAttacks, center* hexagonsCenters){
+    for(long long int i=0; i<totalNumOfAttacks; i++){
+        for(int j=0; j<attacks[i].numOfSoldiers; j++){
+            for(int k=0; k<46; k++){
+                if(hexagonsCenters[k].color==attacks[i].color){
+                    attacks[i].firstSoldier[j].is_potionActive=hexagonsCenters[k].is_potionActive;
                     break;
                 }
             }

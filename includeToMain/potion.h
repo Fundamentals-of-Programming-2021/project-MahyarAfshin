@@ -25,8 +25,8 @@ void drawThePotion(SDL_Renderer* rend, Uint32 color, int x_position, int y_posit
 void initializePotions(){
     potions=malloc(4*sizeof(potion));
     for(int i=0; i<4; i++){
-        potions[i].durationToWait=rand()%4+4;
-        potions[i].durationToBeEnabled=rand()%4+4;
+        potions[i].durationToWait=rand()%4+5;
+        potions[i].durationToBeEnabled=rand()%4+5;
         potions[i].is_deployed=false;
         potions[i].is_enabled=false;
     }
@@ -66,9 +66,9 @@ void findPotionCoordinates_random(center* hexagonsCenters, int* x_position, int*
 }
 
 void deployPotion(long long int numOfFrames_fromBegining, center* hexagonsCenters){
-    if(numOfFrames_fromBegining%900==800){
+    if(numOfFrames_fromBegining%360==300){
         int potionIndex=rand()%4;
-        fprintf(file,"%d\n",potionIndex);
+        //fprintf(file,"%d\n",potionIndex);
         potions[potionIndex].is_deployed=true;
         findPotionCoordinates_random(hexagonsCenters,&potions[potionIndex].x_position,&potions[potionIndex].y_position);
         potions[potionIndex].frameDeployed=numOfFrames_fromBegining;
@@ -78,7 +78,7 @@ void deployPotion(long long int numOfFrames_fromBegining, center* hexagonsCenter
 void displayPotions(SDL_Renderer* rend, long long int numOfFrames_fromBegining){
     for(int i=0; i<4; i++){
         if(potions[i].is_deployed==true){
-            fprintf(fuckYou,"%d\n",i);
+            //fprintf(fuckYou,"%d\n",i);
             if(numOfFrames_fromBegining-potions[i].frameDeployed<=potions[i].durationToWait*60){
                 drawThePotion(rend,potions[i].color,potions[i].x_position,potions[i].y_position);
             }
@@ -89,12 +89,12 @@ void displayPotions(SDL_Renderer* rend, long long int numOfFrames_fromBegining){
     }
 }
 
-void soldiersCollision_withPotion(long long int totalNumOfAttacks, int totalNumOfOponents, long long int numOfFrames_fromBegining){
+void soldiersCollision_withPotion(long long int totalNumOfAttacks, int totalNumOfOponents, long long int numOfFrames_fromBegining, center* hexagonsCenters){
     for(int i=0; i<4; i++){
         if(potions[i].is_deployed==true){
             for(long long int j=0; j<totalNumOfAttacks; j++){
                 for(int k=0; k<attacks[j].numOfSoldiers; k++){
-                    if(attacks[j].firstSoldier[k].x_coordinate>=potions[i].x_position && attacks[j].firstSoldier[k].x_coordinate<=potions[i].x_position+20 && attacks[j].firstSoldier[k].y_coordinate>=potions[i].y_position && attacks[j].firstSoldier[k].y_coordinate<=potions[i].y_position+10 ){
+                    if(attacks[j].firstSoldier[k].x_coordinate>=potions[i].x_position-5 && attacks[j].firstSoldier[k].x_coordinate<=potions[i].x_position+30 && attacks[j].firstSoldier[k].y_coordinate>=potions[i].y_position-5 && attacks[j].firstSoldier[k].y_coordinate<=potions[i].y_position+20 && attacks[j].firstSoldier[k].is_potionActive==false){
                         potions[i].is_deployed=false;
                         potions[i].is_enabled=true;
                         potions[i].frameEnabled=numOfFrames_fromBegining;
@@ -104,7 +104,7 @@ void soldiersCollision_withPotion(long long int totalNumOfAttacks, int totalNumO
                         double deltaX=attacks[j].firstSoldier[k].x_coordinate-potions[i].x_position-10;
                         double deltaY=attacks[j].firstSoldier[k].y_coordinate-potions[i].y_position-20;
                         double distance=sqrt(deltaY*deltaY+deltaX*deltaX);
-                        if(distance<=15){
+                        if(distance<=15 && attacks[j].firstSoldier[k].is_potionActive==false){
                             potions[i].is_deployed=false;
                             potions[i].is_enabled=true;
                             potions[i].frameEnabled=numOfFrames_fromBegining;
@@ -125,6 +125,8 @@ void potionsLogic(long long int numOfFrames_fromBegining, center* hexagonsCenter
                     for(int j=0; j<46; j++){
                         if(hexagonsCenters[j].is_used==true && hexagonsCenters[j].color==potions[i].teamColor){
                             hexagonsCenters[j].speedCoefficient=5;
+                            hexagonsCenters[j].is_potionActive=true;
+                            hexagonsCenters[j].centerColor=potions[i].color;
                         }
                     }
                     break;
@@ -134,11 +136,19 @@ void potionsLogic(long long int numOfFrames_fromBegining, center* hexagonsCenter
                             hexagonsCenters[j].speedCoefficient=3;
                         }
                     }
+                    for(int j=0; j<46; j++){
+                        if(hexagonsCenters[j].is_used==true && hexagonsCenters[j].color==potions[i].teamColor){
+                            hexagonsCenters[j].is_potionActive=true;
+                            hexagonsCenters[j].centerColor=potions[i].color;
+                        }
+                    }
                     break;
                 case 2:
                     for(int j=0; j<46; j++){
                         if(hexagonsCenters[j].is_used==true && hexagonsCenters[j].color==potions[i].teamColor){
                             hexagonsCenters[j].no_end=true;
+                            hexagonsCenters[j].is_potionActive=true;
+                            hexagonsCenters[j].centerColor=potions[i].color;
                         }
                     }
                     break;
@@ -146,6 +156,8 @@ void potionsLogic(long long int numOfFrames_fromBegining, center* hexagonsCenter
                     for(int j=0; j<46; j++){
                         if(hexagonsCenters[j].is_used==true && hexagonsCenters[j].color==potions[i].teamColor){
                             hexagonsCenters[j].soldierAddCoefficient=4;
+                            hexagonsCenters[j].is_potionActive=true;
+                            hexagonsCenters[j].centerColor=potions[i].color;
                         }
                     }
                     break;
@@ -159,6 +171,8 @@ void potionsLogic(long long int numOfFrames_fromBegining, center* hexagonsCenter
                     for(int j=0; j<46; j++){
                         if(hexagonsCenters[j].is_used==true && hexagonsCenters[j].color==potions[i].teamColor){
                             hexagonsCenters[j].speedCoefficient=1;
+                            hexagonsCenters[j].is_potionActive=false;
+                            hexagonsCenters[j].centerColor=hexagonsCenters[j].color+0x8f000000;
                         }
                     }
                     break;
@@ -168,11 +182,19 @@ void potionsLogic(long long int numOfFrames_fromBegining, center* hexagonsCenter
                             hexagonsCenters[j].speedCoefficient=1;
                         }
                     }
+                    for(int j=0; j<46; j++){
+                        if(hexagonsCenters[j].is_used==true && hexagonsCenters[j].color==potions[i].teamColor){
+                            hexagonsCenters[j].is_potionActive=false;
+                            hexagonsCenters[j].centerColor=hexagonsCenters[j].color+0x8f000000;
+                        }
+                    }
                     break;
                 case 2:
                     for(int j=0; j<46; j++){
                         if(hexagonsCenters[j].is_used==true && hexagonsCenters[j].color==potions[i].teamColor){
                             hexagonsCenters[j].no_end=false;
+                            hexagonsCenters[j].is_potionActive=false;
+                            hexagonsCenters[j].centerColor=hexagonsCenters[j].color+0x8f000000;
                         }
                     }
                     break;
@@ -180,6 +202,8 @@ void potionsLogic(long long int numOfFrames_fromBegining, center* hexagonsCenter
                     for(int j=0; j<46; j++){
                         if(hexagonsCenters[j].is_used==true && hexagonsCenters[j].color==potions[i].teamColor){
                             hexagonsCenters[j].soldierAddCoefficient=1;
+                            hexagonsCenters[j].is_potionActive=false;
+                            hexagonsCenters[j].centerColor=hexagonsCenters[j].color+0x8f000000;
                         }
                     }
                     break;
@@ -189,5 +213,22 @@ void potionsLogic(long long int numOfFrames_fromBegining, center* hexagonsCenter
             potions[i].is_enabled=false;
         }
 
+    }
+}
+
+void potionFade(center* hexagonsCenters, long long int numOfFrames_fromBegining){
+    for(int i=0; i<4; i++){
+        if(potions[i].is_enabled==true){
+            for(int j=0; j<46; j++){
+                if(numOfFrames_fromBegining-potions[i].durationToBeEnabled && hexagonsCenters[j].color==potions[i].teamColor){
+                    fprintf(file, "ratio: %.2lf\n", ((numOfFrames_fromBegining-potions[i].frameEnabled)*1.0/(60*potions[i].durationToBeEnabled)));
+                    fprintf(file,"color before: %x\n", hexagonsCenters[j].centerColor);
+                    Uint32 colorCorrection = ((numOfFrames_fromBegining-potions[i].frameEnabled)*1.0/(60*potions[i].durationToBeEnabled))*255*256*256*256;
+                    hexagonsCenters[j].centerColor-=colorCorrection/(256*256*256)*(256*256*256);
+                    fprintf(file,"correction: %x\n", colorCorrection);
+                    fprintf(file,"color after: %x\n", hexagonsCenters[j].centerColor);
+                }
+            }
+        }
     }
 }

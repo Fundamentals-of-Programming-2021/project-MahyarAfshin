@@ -32,11 +32,11 @@ void loadUsers(){
     fclose(usersFile);
 }
 
-void add_new_user(char name[51]){
+int add_new_user(char name[51]){
     loadUsers();
     for(long long int i=0; i<numOfUsers; i++){
         if(strcmp(users[i].name,name)==0){
-            return;
+            return i;
         }
     }
     numOfUsers++;
@@ -52,6 +52,7 @@ void add_new_user(char name[51]){
     FILE* usersFile=fopen("users.dat","w");
     fwrite(users,sizeof(user),numOfUsers,usersFile);
     fclose(usersFile);
+    return numOfUsers-1;
 }
 
 void printUser(){

@@ -46,7 +46,7 @@ void typeTheEnteredName(char name[51], SDL_Rect secondDest, SDL_Color color, SDL
     SDL_DestroyTexture(texture);
 }
 
-int display_scoreBoard(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthTex, SDL_Texture* fifthTex, SDL_Texture* tex){
+int display_scoreBoard(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthTex, SDL_Texture* fifthTex, SDL_Texture* tex, long long int userIndex){
     bubble_sort_users();
     TTF_Font* enteredName_font=TTF_OpenFont("../resources/Exported Fonts/Annai MN/AnnaiMN.ttf", 15);
     SDL_Color color={0,0,0,255};
@@ -213,7 +213,7 @@ int display_scoreBoard(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* f
 
 }
 
-int thirdPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthTex, SDL_Texture* fifthTex, SDL_Texture* tex){
+int thirdPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthTex, SDL_Texture* fifthTex, SDL_Texture* tex, long long int userIndex){
     TTF_Font* enteredName_font=TTF_OpenFont("../resources/Exported Fonts/Annai MN/AnnaiMN.ttf", 15);
     SDL_Color color={0,0,0,255};
     //creating textures
@@ -266,22 +266,22 @@ int thirdPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourth
             }
             else if(event.type==SDL_MOUSEBUTTONDOWN){
                 if(check_inTheBox((windowWidth-boxesWidth)/2,200)==true){
-                    close=startGame(1,rend);
+                    close=startGame(1,rend,userIndex);
                 }
                 else if(check_inTheBox((windowWidth-boxesWidth)/2,250)==true){
-                    close=startGame(2,rend);
+                    close=startGame(2,rend,userIndex);
                 }
                 else if(check_inTheBox((windowWidth-boxesWidth)/2,300)==true){
-                    close=startGame(3,rend);
+                    close=startGame(3,rend,userIndex);
                 }
                 else if(check_inTheBox((windowWidth-boxesWidth)/2,350)==true){
-                    close=startGame(4,rend);
+                    close=startGame(4,rend,userIndex);
                 }
                 else if(check_inTheBox((windowWidth-boxesWidth)/2,400)==true){
-                    close=startGame(5,rend);
+                    close=startGame(5,rend,userIndex);
                 }
                 else if(check_inTheBox((windowWidth-boxesWidth)/2,150)==true){
-                    close=startGame(0,rend);
+                    close=startGame(0,rend,userIndex);
                 }
             }
         }
@@ -313,7 +313,7 @@ int thirdPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourth
     return close;
 }
 
-int nextPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthTex, SDL_Texture* fifthTex, SDL_Texture* tex ){
+int nextPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthTex, SDL_Texture* fifthTex, SDL_Texture* tex, long long int userIndex){
     TTF_Font* enteredName_font=TTF_OpenFont("../resources/Exported Fonts/Annai MN/AnnaiMN.ttf", 15);
     SDL_Color color={0,0,0,255};
     //creating textures
@@ -348,10 +348,10 @@ int nextPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthT
             }
             else if(event.type==SDL_MOUSEBUTTONDOWN){
                 if(check_inTheBox((windowWidth-boxesWidth)/2,250)==true){
-                    close=thirdPageMenu(rend,thirdTex,fourthTex,fifthTex,tex);
+                    close=thirdPageMenu(rend,thirdTex,fourthTex,fifthTex,tex,userIndex);
                 }
                 else if(check_inTheBox((windowWidth-boxesWidth)/2,350)==true){
-                    close=display_scoreBoard(rend,thirdTex,fourthTex,fifthTex,tex);
+                    close=display_scoreBoard(rend,thirdTex,fourthTex,fifthTex,tex,userIndex);
                 }
             }
         }
