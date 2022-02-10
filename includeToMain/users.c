@@ -44,18 +44,6 @@ int add_new_user(char name[51]){
     return numOfUsers-1;
 }
 
-void printUser(){
-    FILE* usersFile=fopen("users.dat","r");
-    user temp;
-    int index=0;
-    while(fread(&temp,sizeof(user),1,usersFile)){
-        printf("%s\n",users[index].name);
-        printf("%lld\n",users[index].score);
-        index++;
-    }
-    fclose(usersFile);
-}
-
 void swap(long long int i, long long int j){
     user temp;
     temp.name[0]='\0';

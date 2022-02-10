@@ -49,9 +49,8 @@ void findPotionCoordinates_random(center* hexagonsCenters, int* x_position, int*
 }
 
 void deployPotion(long long int numOfFrames_fromBegining, center* hexagonsCenters){
-    if(numOfFrames_fromBegining%360==300){
+    if(rand()%360==300){
         int potionIndex=rand()%4;
-        //fprintf(file,"%d\n",potionIndex);
         potions[potionIndex].is_deployed=true;
         findPotionCoordinates_random(hexagonsCenters,&potions[potionIndex].x_position,&potions[potionIndex].y_position);
         potions[potionIndex].frameDeployed=numOfFrames_fromBegining;
@@ -61,7 +60,6 @@ void deployPotion(long long int numOfFrames_fromBegining, center* hexagonsCenter
 void displayPotions(SDL_Renderer* rend, long long int numOfFrames_fromBegining){
     for(int i=0; i<4; i++){
         if(potions[i].is_deployed==true){
-            //fprintf(fuckYou,"%d\n",i);
             if(numOfFrames_fromBegining-potions[i].frameDeployed<=potions[i].durationToWait*60){
                 drawThePotion(rend,potions[i].color,potions[i].x_position,potions[i].y_position);
             }
@@ -204,12 +202,8 @@ void potionFade(center* hexagonsCenters, long long int numOfFrames_fromBegining)
         if(potions[i].is_enabled==true){
             for(int j=0; j<46; j++){
                 if(numOfFrames_fromBegining-potions[i].durationToBeEnabled && hexagonsCenters[j].color==potions[i].teamColor){
-                    fprintf(file, "ratio: %.2lf\n", ((numOfFrames_fromBegining-potions[i].frameEnabled)*1.0/(60*potions[i].durationToBeEnabled)));
-                    fprintf(file,"color before: %x\n", hexagonsCenters[j].centerColor);
                     Uint32 colorCorrection = ((numOfFrames_fromBegining-potions[i].frameEnabled)*1.0/(60*potions[i].durationToBeEnabled))*255*256*256*256;
                     hexagonsCenters[j].centerColor-=colorCorrection/(256*256*256)*(256*256*256);
-                    fprintf(file,"correction: %x\n", colorCorrection);
-                    fprintf(file,"color after: %x\n", hexagonsCenters[j].centerColor);
                 }
             }
         }

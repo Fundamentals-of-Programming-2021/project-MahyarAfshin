@@ -33,18 +33,18 @@ SDL_Rect user6_dest;
 SDL_Rect user7_dest;
 SDL_Rect user8_dest;
 potion* potions=NULL;
-FILE* file;
-FILE* fuckYou;
 const int FPS=60;
 const int soldiersSpeed=75;
 attack* attacks=NULL;
 user* users=NULL;
 long long int numOfUsers=0;
 teams* oponents=NULL;
+SDL_Rect randomMap_dest1;
+SDL_Rect randomMap_dest2;
+SDL_Rect randomMap_dest3;
+SDL_Rect randomMap_dest4;
 
 int main(){
-    file=fopen("log.txt","w");
-    fuckYou=fopen("fuckyou.txt","w");
     srand(time(0));
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     TTF_Init();
@@ -143,8 +143,5 @@ int main(){
     SDL_DestroyWindow(gameWindow);
     TTF_Quit();
     SDL_Quit();
-    fclose(file);
-    fclose(fuckYou);
-    printUser();
     return 0;
 }

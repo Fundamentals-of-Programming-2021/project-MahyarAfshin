@@ -20,6 +20,25 @@ void typeTheEnteredName(char name[51], SDL_Rect secondDest, SDL_Color color, SDL
     SDL_DestroyTexture(texture);
 }
 
+void typeNumbers(char num1[20], char num2[20], SDL_Renderer* rend, SDL_Color color, TTF_Font* enteredName_font){
+    SDL_Surface* surf=TTF_RenderText_Solid(enteredName_font,num1,color);
+    SDL_Texture* texture1=SDL_CreateTextureFromSurface(rend,surf);
+    SDL_QueryTexture(texture1,NULL,NULL,&randomMap_dest3.w,&randomMap_dest3.h);
+    randomMap_dest3.x=(boxesWidth-randomMap_dest3.w)/2+(windowWidth-boxesWidth)/2;
+    randomMap_dest3.y=250+(boxesHeight-randomMap_dest3.h)/2;
+    SDL_RenderCopy(rend,texture1,NULL,&randomMap_dest3);
+    SDL_FreeSurface(surf);
+    SDL_DestroyTexture(texture1);
+    surf=TTF_RenderText_Solid(enteredName_font,num2,color);
+    SDL_Texture* texture2=SDL_CreateTextureFromSurface(rend,surf);
+    SDL_QueryTexture(texture2,NULL,NULL,&randomMap_dest4.w,&randomMap_dest4.h);
+    randomMap_dest4.x=(boxesWidth-randomMap_dest4.w)/2+(windowWidth-boxesWidth)/2;
+    randomMap_dest4.y=350+(boxesHeight-randomMap_dest4.h)/2;
+    SDL_RenderCopy(rend,texture2,NULL,&randomMap_dest4);
+    SDL_FreeSurface(surf);
+    SDL_DestroyTexture(texture2);
+}
+
 int display_scoreBoard(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthTex, SDL_Texture* fifthTex, SDL_Texture* tex, long long int userIndex){
     bubble_sort_users();
     TTF_Font* enteredName_font=TTF_OpenFont("../resources/Exported Fonts/Annai MN/AnnaiMN.ttf", 15);
@@ -187,6 +206,79 @@ int display_scoreBoard(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* f
 
 }
 
+int randomMap_menu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthTex, SDL_Texture* fifthTex, SDL_Texture* tex, long long int userIndex){
+    TTF_Font* enteredName_font=TTF_OpenFont("../resources/Exported Fonts/Annai MN/AnnaiMN.ttf", 13);
+    SDL_Color color={0,0,0,255};
+
+    //creating textures
+    SDL_Surface* gameName=TTF_RenderText_Solid(enteredName_font,"please enter the number of your oponents: (it should be between 2 and 5)",color);
+    SDL_Texture* text_1=SDL_CreateTextureFromSurface(rend,gameName);
+    SDL_FreeSurface(gameName);
+    SDL_QueryTexture(text_1,NULL,NULL,&randomMap_dest1.w,&randomMap_dest1.h);
+    randomMap_dest1.x=(windowWidth-randomMap_dest1.w)/2;
+    randomMap_dest1.y=200;
+    gameName=TTF_RenderText_Solid(enteredName_font,"please enter the number of regions: (it should be between 20 and 30)",color);
+    SDL_Texture* text_2=SDL_CreateTextureFromSurface(rend,gameName);
+    SDL_FreeSurface(gameName);
+    SDL_QueryTexture(text_2,NULL,NULL,&randomMap_dest2.w,&randomMap_dest2.h);
+    randomMap_dest2.x=(windowWidth-randomMap_dest2.w)/2;
+    randomMap_dest2.y=300;
+
+    int close=0;
+    SDL_Event event;
+    char num1[20];
+    num1[0]='\0';
+    char num2[20];
+    num2[0]='\0';
+    int isFirstEnterClicked=0;
+    while(close != 1){
+        SDL_SetRenderDrawColor(rend,0xff,0xff,0xff,0xff);
+        SDL_RenderClear(rend);
+        while(SDL_PollEvent(&event)){
+            if(event.type==SDL_QUIT){
+                close=1;
+            }
+            else if(event.type==SDL_TEXTINPUT && isFirstEnterClicked==0){
+                strcat(num1,event.text.text);
+            }
+            else if(event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_BACKSPACE && strlen(num1) && isFirstEnterClicked==0){
+                num1[strlen(num1)-1]='\0';
+            }
+            else if(event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_RETURN && strlen(num1) && isFirstEnterClicked==0){
+                isFirstEnterClicked=1;
+            }
+            else if(event.type==SDL_TEXTINPUT && isFirstEnterClicked==1){
+                strcat(num2,event.text.text);
+            }
+            else if(event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_BACKSPACE && strlen(num2) && isFirstEnterClicked==1){
+                num2[strlen(num2)-1]='\0';
+            }
+            else if(event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_RETURN && strlen(num2) && isFirstEnterClicked==1){
+                int oponentNum;
+                int regionNum;
+                sscanf(num1,"%d",&oponentNum);
+                sscanf(num2,"%d",&regionNum);
+                close=startGame(5,rend,userIndex,oponentNum,regionNum);
+            }
+        }
+        SDL_RenderCopy(rend,tex,NULL,&dest);
+        SDL_RenderCopy(rend,thirdTex,NULL,&thirdDest);
+        SDL_RenderCopy(rend,fourthTex,NULL,&fourthDest);
+        SDL_RenderCopy(rend,fifthTex,NULL,&fifthDest);
+        SDL_RenderCopy(rend,text_1,NULL,&randomMap_dest1);
+        SDL_RenderCopy(rend,text_2,NULL,&randomMap_dest2);
+        boxColor(rend,(windowWidth-boxesWidth)/2,250,(windowWidth+boxesWidth)/2,250+boxesHeight,0x300000ff);
+        boxColor(rend,(windowWidth-boxesWidth)/2,350,(windowWidth+boxesWidth)/2,350+boxesHeight,0x300000ff);
+        typeNumbers(num1,num2,rend,color,enteredName_font);
+        SDL_RenderPresent(rend);
+        SDL_Delay(1000/FPS); 
+    }
+    SDL_DestroyTexture(text_1);
+    SDL_DestroyTexture(text_2);
+    TTF_CloseFont(enteredName_font);
+    return close;
+}
+
 int thirdPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthTex, SDL_Texture* fifthTex, SDL_Texture* tex, long long int userIndex){
     TTF_Font* enteredName_font=TTF_OpenFont("../resources/Exported Fonts/Annai MN/AnnaiMN.ttf", 15);
     SDL_Color color={0,0,0,255};
@@ -240,22 +332,22 @@ int thirdPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourth
             }
             else if(event.type==SDL_MOUSEBUTTONDOWN){
                 if(check_inTheBox((windowWidth-boxesWidth)/2,200)==true){
-                    close=startGame(1,rend,userIndex);
+                    close=startGame(1,rend,userIndex,0,0);
                 }
                 else if(check_inTheBox((windowWidth-boxesWidth)/2,250)==true){
-                    close=startGame(2,rend,userIndex);
+                    close=startGame(2,rend,userIndex,0,0);
                 }
                 else if(check_inTheBox((windowWidth-boxesWidth)/2,300)==true){
-                    close=startGame(3,rend,userIndex);
+                    close=startGame(3,rend,userIndex,0,0);
                 }
                 else if(check_inTheBox((windowWidth-boxesWidth)/2,350)==true){
-                    close=startGame(4,rend,userIndex);
+                    close=startGame(4,rend,userIndex,0,0);
                 }
                 else if(check_inTheBox((windowWidth-boxesWidth)/2,400)==true){
-                    close=startGame(5,rend,userIndex);
+                    close=randomMap_menu(rend,thirdTex,fourthTex,fifthTex,tex,userIndex);
                 }
                 else if(check_inTheBox((windowWidth-boxesWidth)/2,150)==true){
-                    close=startGame(0,rend,userIndex);
+                    close=startGame(0,rend,userIndex,0,0);
                 }
             }
         }

@@ -2,6 +2,7 @@
 
 #include<SDL2/SDL_ttf.h>
 #include<SDL2/SDL_image.h>
+#include<string.h>
 #include "game.h"
 
 extern SDL_Rect dest;
@@ -27,9 +28,15 @@ extern SDL_Rect user5_dest;
 extern SDL_Rect user6_dest;
 extern SDL_Rect user7_dest;
 extern SDL_Rect user8_dest;
+extern SDL_Rect randomMap_dest1;
+extern SDL_Rect randomMap_dest2;
+extern SDL_Rect randomMap_dest3;
+extern SDL_Rect randomMap_dest4;
 
 bool check_inTheBox(int box_upperLeftCorner_x, int box_upperLeftCorner_y);
 void typeTheEnteredName(char name[51], SDL_Rect secondDest, SDL_Color color, SDL_Renderer* rend, TTF_Font* enteredName_font);
 int display_scoreBoard(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthTex, SDL_Texture* fifthTex, SDL_Texture* tex, long long int userIndex);
 int thirdPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthTex, SDL_Texture* fifthTex, SDL_Texture* tex, long long int userIndex);
 int nextPageMenu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthTex, SDL_Texture* fifthTex, SDL_Texture* tex, long long int userIndex);
+int randomMap_menu(SDL_Renderer* rend, SDL_Texture* thirdTex, SDL_Texture* fourthTex, SDL_Texture* fifthTex, SDL_Texture* tex, long long int userIndex);
+void typeNumbers(char num1[20], char num2[20], SDL_Renderer* rend, SDL_Color color, TTF_Font* enteredName_font);
