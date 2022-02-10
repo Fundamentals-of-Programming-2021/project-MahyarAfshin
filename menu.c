@@ -2,6 +2,46 @@
 #include<string.h>
 #include"nextPageMenu.h"
 
+const int windowWidth=600;
+const int windowHeight=750;
+const int boxesWidth=200;
+const int boxesHeight=40;
+int mouse_xPosition;
+int mouse_yPosition;
+color* colors=NULL;
+SDL_Rect dest;
+SDL_Rect nameDest;
+SDL_Rect secondDest;
+SDL_Rect thirdDest;
+SDL_Rect fourthDest;
+SDL_Rect fifthDest;
+SDL_Rect firstClick;
+SDL_Rect secondClick;
+SDL_Rect thirdClick;
+SDL_Rect map1_dest;
+SDL_Rect map2_dest;
+SDL_Rect map3_dest;
+SDL_Rect map4_dest;
+SDL_Rect randomMap_dest;
+SDL_Rect memoryMap_dest;
+SDL_Rect user1_dest;
+SDL_Rect user2_dest;
+SDL_Rect user3_dest;
+SDL_Rect user4_dest;
+SDL_Rect user5_dest;
+SDL_Rect user6_dest;
+SDL_Rect user7_dest;
+SDL_Rect user8_dest;
+potion* potions=NULL;
+FILE* file;
+FILE* fuckYou;
+const int FPS=60;
+const int soldiersSpeed=75;
+attack* attacks=NULL;
+user* users=NULL;
+long long int numOfUsers=0;
+teams* oponents=NULL;
+
 int main(){
     file=fopen("log.txt","w");
     fuckYou=fopen("fuckyou.txt","w");
