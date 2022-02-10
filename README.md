@@ -11,6 +11,7 @@ project-MahyarAfshin created by GitHub Classroom
 mkdir build
 
 cd build
+
 حال با این دستورات برنامه را ران کنید: 
 
 cmake ..
