@@ -6,3 +6,11 @@ add_executable(main menu.c includeToMain/AI.h includeToMain/AI.c includeToMain/m
 target_link_libraries(main m SDL2 SDL2_gfx SDL2_TTF SDL2_image)
 include_directories("includeToMain/")
 include_directories("recources/")
+
+# cmake_minimum_required(VERSION 3.16)
+# project("FOP final project")
+# include_directories("/usr/include/SDL2")
+# include_directories("includeToMain/")
+# include_directories("recources/")
+# add_executable(main menu.c includeToMain/AI.h includeToMain/AI.c includeToMain/map.h includeToMain/map.c includeToMain/potion.h includeToMain/potion.c includeToMain/soldiers.h includeToMain/soldiers.c includeToMain/users.h includeToMain/users.c includeToMain/game.c includeToMain/game.h includeToMain/nextPageMenu.c includeToMain/nextPageMenu.h)
+# target_link_libraries(main m SDL2 SDL2_gfx SDL2_ttf SDL2_image)
